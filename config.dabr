@@ -1,0 +1,4 @@
+yay -S git-credential-manager-bin
+git-credential-manager configure
+git config --global credential.credentialStore secretservice
+git push
