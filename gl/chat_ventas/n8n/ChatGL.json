@@ -1,0 +1,317 @@
+{
+  "name": "ChatGL",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "mode": "webhook",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [-1072, -352],
+      "id": "abce1f1a-e278-4d56-aab7-0fd00b588cc0",
+      "name": "When chat message received",
+      "webhookId": "622bb77a-32c1-455a-a192-33052642ad15"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [-656, -128],
+      "id": "1d9a9826-e487-41c7-ae85-ac1dd21333cb",
+      "name": "Think"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Eres el recepcionista virtual de Grupo Lotificadora. Tu única función es saludar cordialmente al usuario y evaluar la pregunta para delegar la tarea a la herramienta correspondiente segun los siguientes criterios:\nSi pregunta por precio, ubicacion o informacion sobre terrenos DEBES utilizar la herramienta 'AGENTE VENTAS'\nSi solicita agendar una cita con vendedor o esta interesado en ver los terrenos DEBES utilizar la herramienta 'AGENTE CITAS'\n\nREGLA MUY IMPORTANTE\nNo intentes responder tú mismo sobre inventarios; delega siempre esa tarea a la herramienta especializada.",
+          "enableStreaming": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [-800, -352],
+      "id": "4a9b5a9f-2f31-4f78-b05f-f85ca909f36f",
+      "name": "Asistente General"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Utiliza esta herramienta para CUALQUIER consulta sobre venta de terrenos, precios, servicios, mensualidades, ubicaciones, o cuando el cliente de indicios de querer comprar.",
+        "text": "={{ $fromAI('Prompt__User_Message_', ``, 'string') }}",
+        "options": {
+          "systemMessage": "=Eres asistente de ventas en Grupo Lotificadora, especializado en terrenos residenciales en Mexicali y Los Algodones. Objetivo: resolver dudas, calificar prospectos de forma natural y guiar hacia cierre de venta.\n\nREGLAS GENERALES:\nResponde SIEMPRE en español, tono amable, profesional y conversacional.\nRespuestas breves, directas, sin repeticiones ni texto innecesario.\nUsa nombre del usuario solo si lo proporciona.\nTrigger de Precio: Si preguntan por costos, menciona siempre la mensualidad más baja disponible en la zona de su interés para captar atención.\nIntegra progresivamente estas 3 preguntas de precalificación obligatorias:\n  1. ¿En qué zona te interesa? (Poniente, Oriente o Los Algodones)\n  2. ¿Cuál es tu presupuesto mensual aproximado en pesos?\n  3. ¿Buscas terreno con servicios listos para construir ya o para invertir a mediano plazo?\nSi menciona competidores: \"En Grupo Lotificadora garantizamos servicios, seguridad legal y jurídica total.\"\nUsa EXCLUSIVAMENTE la información del inventario. NO inventes datos, precios ni servicios.\n\nINVENTARIO (úsalo tal cual):\nZona Poniente:\nLa Gloria: 200 m², desde $4,861/mes. Luz, agua, drenaje. Ub: carr. Progreso–Santa Isabel, 2 min entronque Tijuana, cerca Sukarne.\nEl Paraíso: 190 m², desde $4,618/mes. Luz, agua, drenaje. Ub: prol. Blvd. Lázaro Cárdenas, cerca estación bomberos y subcomandancia.\nJoyas del Paraíso 1 y 2: 190 m², desde $4,618/mes. Luz, agua, drenaje. Ub: espaldas parque acuático El Barco, 5 min Gómez Morin y nueva Garita Centro.\nJoyas del Paraíso 3: 190 m², desde $3,563/mes. Luz/Agua en curso, drenaje (2028) Ub: misma zona Joyas 1-2.\nAires del Paraíso 1 y 2: desde 190 m², desde $3,958/mes. Luz disponible; agua en curso; drenaje desde 2028. Ub: curva carr. Santa Isabel, cerca centros comerciales y Garita Centro.\nAires del Paraíso 3: 190 m², desde $3,563/mes. Luz/Agua en curso, drenaje (2028) Ub: misma zona Aires 1-2.\n\nZona Oriente:\nOasis: 300 m², desde $5,000/mes.\n\nLos Algodones:\nAlgodones y Algodones 2: 700 m², desde $10,000/mes.\n\nRecomienda según zona de interés, destacando beneficios relevantes del inventario."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 3,
+      "position": [-560, -160],
+      "id": "3667c236-d66d-4bb1-bbb0-1bd1156e2915",
+      "name": "AGENTE VENTAS"
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 15
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [-704, 96],
+      "id": "83388e34-ee1d-4e20-85c9-7ce6d9a802b2",
+      "name": "MainMEM"
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 15
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [-464, 160],
+      "id": "c2d55835-01ee-45aa-97db-00ca9062c366",
+      "name": "Sales Memory"
+    },
+    {
+      "parameters": {
+        "model": "qwen3:4b-instruct-2507-q8_0",
+        "options": {
+          "temperature": 0.1,
+          "frequencyPenalty": 1.15
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [-800, -608],
+      "id": "688ae2e0-6a02-4312-a059-f7f8ec464c63",
+      "name": "Main Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "nT7qboXJ8Rol4xwD",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "qwen/qwen3-32b",
+        "options": {
+          "maxTokensToSample": 4096,
+          "temperature": 0.2
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [-560, 64],
+      "id": "8ef0293a-559a-4baa-a42d-aeacd502c7d2",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "guA6GsZjct2oknFf",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [-288, -64],
+      "id": "88a05837-0240-4e53-9c95-63718f688612",
+      "name": "Think1"
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 15
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [-64, 160],
+      "id": "a2c9a6e4-1ca2-41f2-b451-4a04a74ad9de",
+      "name": "Sales Memory1"
+    },
+    {
+      "parameters": {
+        "model": "qwen/qwen3-32b",
+        "options": {
+          "maxTokensToSample": 4096,
+          "temperature": 0.2
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [-160, 64],
+      "id": "1806a1e0-2820-4cc9-9090-875cfc7407d0",
+      "name": "Groq Chat Model1",
+      "credentials": {
+        "groqApi": {
+          "id": "guA6GsZjct2oknFf",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [112, -64],
+      "id": "26e9b2de-505d-41bc-8691-f6e0106b1719",
+      "name": "Think2"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Utiliza esta herramienta UNICAMENTE si el usuario quiere agendar una cita",
+        "text": "={{ $fromAI('Prompt__User_Message_', ``, 'string') }}",
+        "options": {
+          "systemMessage": "=Eres asistente para agendar citas"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 3,
+      "position": [-160, -160],
+      "id": "a09424b6-1aa9-4158-bafc-175436faa7e3",
+      "name": "AGENTE CITAS"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Asistente General",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think": {
+      "ai_tool": [
+        [
+          {
+            "node": "Asistente General",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AGENTE VENTAS": {
+      "ai_tool": [
+        [
+          {
+            "node": "Asistente General",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MainMEM": {
+      "ai_memory": [
+        [
+          {
+            "node": "Asistente General",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sales Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AGENTE VENTAS",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Main Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Asistente General",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AGENTE CITAS",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AGENTE VENTAS",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AGENTE VENTAS",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sales Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "AGENTE CITAS",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model1": {
+      "ai_languageModel": [[]]
+    },
+    "Think2": {
+      "ai_tool": [
+        [
+          {
+            "node": "AGENTE CITAS",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AGENTE CITAS": {
+      "ai_tool": [
+        [
+          {
+            "node": "Asistente General",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "2c809452-5b4b-400a-bb69-4c29638158d7",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5e9aa1c47cbeef2ab1ac8a751a19425b0cd8512f36d2e6001327ddf89052fb3a"
+  },
+  "id": "qdklpvjdShmPKnkBzjNAB",
+  "tags": []
+}
