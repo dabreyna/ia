@@ -1,0 +1,27 @@
+preguntas top de los leads:
+
+¿información?
+¿costos?
+¿mensualidad?
+¿cuenta con servicios?
+¿cuentan con más ubicaciones?
+ubicaciones de oficinas
+¿que requisitos piden? Respuesta: 'Comprobante de domicilio, identificación y pago de 1er mensualidad'
+¿el pago es fijo o aumenta cada año? Respuesta: 'Contamos con financiamiento fijo y con 6% de incremento anual'
+tienes fotos de los terrenos
+¿A cuántos meses? Respuesta: '36,120 y 144 mensualidades'
+¿Es la única medida que tienen? Respuesta: 'Contamos con diferentes medidas'
+¿Tienen en esquina? Respuesta: 'Si, contamos con esquinas'
+¿Cuál es el costo total del terreno?
+¿Tendrá algún mapa?
+Ubicacion de donde están
+¿No tienes algo más económico?
+¿Necesito hacer cita?
+¿Dónde nos vemos?
+¿En cuántos años lo termino de pagar?
+¿Cuánto miden? / ¿Cuáles son las medidas? Respuesta: '10m de frente x 19m de fondo'
+¿Cuánto piden de enganche? Respuesta: 'No pedimos enganche, solo el pago de la primer mensualidad'
+¿Las esquinas cuestan más? Respuesta: 'Sí, ya que son más grandes'
+¿Ya se puede escriturar?
+¿Algún número para pedir información? Respuesta: '686 905-2104'
+

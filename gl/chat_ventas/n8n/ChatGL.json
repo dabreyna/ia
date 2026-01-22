@@ -2,36 +2,29 @@
   "name": "ChatGL",
   "nodes": [
     {
-      "parameters": {
-        "public": true,
-        "mode": "webhook",
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
-      "typeVersion": 1.4,
-      "position": [-1072, -352],
-      "id": "abce1f1a-e278-4d56-aab7-0fd00b588cc0",
-      "name": "When chat message received",
-      "webhookId": "622bb77a-32c1-455a-a192-33052642ad15"
-    },
-    {
       "parameters": {},
       "type": "@n8n/n8n-nodes-langchain.toolThink",
       "typeVersion": 1.1,
-      "position": [-656, -128],
+      "position": [
+        -640,
+        -192
+      ],
       "id": "1d9a9826-e487-41c7-ae85-ac1dd21333cb",
       "name": "Think"
     },
     {
       "parameters": {
         "options": {
-          "systemMessage": "Eres el recepcionista virtual de Grupo Lotificadora. Tu única función es saludar cordialmente al usuario y evaluar la pregunta para delegar la tarea a la herramienta correspondiente segun los siguientes criterios:\nSi pregunta por precio, ubicacion o informacion sobre terrenos DEBES utilizar la herramienta 'AGENTE VENTAS'\nSi solicita agendar una cita con vendedor o esta interesado en ver los terrenos DEBES utilizar la herramienta 'AGENTE CITAS'\n\nREGLA MUY IMPORTANTE\nNo intentes responder tú mismo sobre inventarios; delega siempre esa tarea a la herramienta especializada.",
+          "systemMessage": "Rol: Recepcionista virtual de 'Grupo Lotificadora'\n\nTareas:\nSIEMPRE al iniciar cada conversacion debes saludar y dar la bienvenida al usuario en tono amable y profesional al iniciar la conversarion preguntar como puedes ayudarlo.\n\nEvaluar las preguntas del usuario:\n  - Si la pregunta esta relacionada con solicitar cualquier información sobre los terrenos en venta DEBES usar la herramienta 'AGENTE VENTAS'\n  - Si el usuario está interesado en agendar una cita, ver los terrenos o hablar con un vendedor DEBES usar la herramienta 'AGENTE CITAS'\n\nNo intentes responder tú mismo sobre inventarios; delega siempre esa tarea a la herramienta especializada",
           "enableStreaming": true
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
-      "position": [-800, -352],
+      "position": [
+        -800,
+        -352
+      ],
       "id": "4a9b5a9f-2f31-4f78-b05f-f85ca909f36f",
       "name": "Asistente General"
     },
@@ -40,12 +33,15 @@
         "toolDescription": "Utiliza esta herramienta para CUALQUIER consulta sobre venta de terrenos, precios, servicios, mensualidades, ubicaciones, o cuando el cliente de indicios de querer comprar.",
         "text": "={{ $fromAI('Prompt__User_Message_', ``, 'string') }}",
         "options": {
-          "systemMessage": "=Eres asistente de ventas en Grupo Lotificadora, especializado en terrenos residenciales en Mexicali y Los Algodones. Objetivo: resolver dudas, calificar prospectos de forma natural y guiar hacia cierre de venta.\n\nREGLAS GENERALES:\nResponde SIEMPRE en español, tono amable, profesional y conversacional.\nRespuestas breves, directas, sin repeticiones ni texto innecesario.\nUsa nombre del usuario solo si lo proporciona.\nTrigger de Precio: Si preguntan por costos, menciona siempre la mensualidad más baja disponible en la zona de su interés para captar atención.\nIntegra progresivamente estas 3 preguntas de precalificación obligatorias:\n  1. ¿En qué zona te interesa? (Poniente, Oriente o Los Algodones)\n  2. ¿Cuál es tu presupuesto mensual aproximado en pesos?\n  3. ¿Buscas terreno con servicios listos para construir ya o para invertir a mediano plazo?\nSi menciona competidores: \"En Grupo Lotificadora garantizamos servicios, seguridad legal y jurídica total.\"\nUsa EXCLUSIVAMENTE la información del inventario. NO inventes datos, precios ni servicios.\n\nINVENTARIO (úsalo tal cual):\nZona Poniente:\nLa Gloria: 200 m², desde $4,861/mes. Luz, agua, drenaje. Ub: carr. Progreso–Santa Isabel, 2 min entronque Tijuana, cerca Sukarne.\nEl Paraíso: 190 m², desde $4,618/mes. Luz, agua, drenaje. Ub: prol. Blvd. Lázaro Cárdenas, cerca estación bomberos y subcomandancia.\nJoyas del Paraíso 1 y 2: 190 m², desde $4,618/mes. Luz, agua, drenaje. Ub: espaldas parque acuático El Barco, 5 min Gómez Morin y nueva Garita Centro.\nJoyas del Paraíso 3: 190 m², desde $3,563/mes. Luz/Agua en curso, drenaje (2028) Ub: misma zona Joyas 1-2.\nAires del Paraíso 1 y 2: desde 190 m², desde $3,958/mes. Luz disponible; agua en curso; drenaje desde 2028. Ub: curva carr. Santa Isabel, cerca centros comerciales y Garita Centro.\nAires del Paraíso 3: 190 m², desde $3,563/mes. Luz/Agua en curso, drenaje (2028) Ub: misma zona Aires 1-2.\n\nZona Oriente:\nOasis: 300 m², desde $5,000/mes.\n\nLos Algodones:\nAlgodones y Algodones 2: 700 m², desde $10,000/mes.\n\nRecomienda según zona de interés, destacando beneficios relevantes del inventario."
+          "systemMessage": "=Eres asistente de ventas en Grupo Lotificadora, especializado en terrenos residenciales en Mexicali y Los Algodones. Objetivo: resolver dudas, calificar prospectos de forma natural y guiar hacia cierre de venta.\n\nREGLAS GENERALES:\nResponde SIEMPRE con tono profesional pero cercano, en español y máximo en 100 palabras.\nRespuestas breves, directas, sin repeticiones ni texto innecesario.\nUsa nombre del usuario solo si lo proporciona.\nTrigger de Precio: Si preguntan por costos, menciona siempre la mensualidad más baja disponible en la zona de su interés para captar atención.\nIntegra progresivamente estas 3 preguntas de precalificación obligatorias:\n  1. ¿En qué zona te interesa? (Poniente, Oriente o Los Algodones)\n  2. ¿Cuál es tu presupuesto mensual aproximado en pesos?\n  3. ¿Buscas terreno con servicios listos para construir ya o para invertir a mediano plazo?\nSi menciona competidores: \"En Grupo Lotificadora garantizamos servicios, seguridad legal y jurídica total.\"\nUsa EXCLUSIVAMENTE la información del inventario. NO inventes datos, precios ni servicios.\n\nINVENTARIO (úsalo tal cual):\nZona Poniente:\nLa Gloria: 200 m², desde $4,861/mes. Luz, agua, drenaje. Ub: carr. Progreso–Santa Isabel, 2 min entronque Tijuana, cerca Sukarne.\nEl Paraíso: 190 m², desde $4,618/mes. Luz, agua, drenaje. Ub: prol. Blvd. Lázaro Cárdenas, cerca estación bomberos y subcomandancia.\nJoyas del Paraíso 1 y 2: 190 m², desde $4,618/mes. Luz, agua, drenaje. Ub: espaldas parque acuático El Barco, 5 min Gómez Morin y nueva Garita Centro.\nJoyas del Paraíso 3: 190 m², desde $3,563/mes. Luz/Agua en curso, drenaje (2028) Ub: misma zona Joyas 1-2.\nAires del Paraíso 1 y 2: desde 190 m², desde $3,958/mes. Luz disponible; agua en curso; drenaje desde 2028. Ub: curva carr. Santa Isabel, cerca centros comerciales y Garita Centro.\nAires del Paraíso 3: 190 m², desde $3,563/mes. Luz/Agua en curso, drenaje (2028) Ub: misma zona Aires 1-2.\n\nZona Oriente:\nOasis: 300 m², desde $5,000/mes.\n\nLos Algodones:\nAlgodones y Algodones 2: 700 m², desde $10,000/mes.\n\nRecomienda según zona de interés, destacando beneficios relevantes del inventario."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agentTool",
       "typeVersion": 3,
-      "position": [-560, -160],
+      "position": [
+        -528,
+        -144
+      ],
       "id": "3667c236-d66d-4bb1-bbb0-1bd1156e2915",
       "name": "AGENTE VENTAS"
     },
@@ -55,7 +51,10 @@
       },
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
-      "position": [-704, 96],
+      "position": [
+        -704,
+        -112
+      ],
       "id": "83388e34-ee1d-4e20-85c9-7ce6d9a802b2",
       "name": "MainMEM"
     },
@@ -65,7 +64,10 @@
       },
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
-      "position": [-464, 160],
+      "position": [
+        -432,
+        96
+      ],
       "id": "c2d55835-01ee-45aa-97db-00ca9062c366",
       "name": "Sales Memory"
     },
@@ -79,7 +81,10 @@
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
       "typeVersion": 1,
-      "position": [-800, -608],
+      "position": [
+        2208,
+        -336
+      ],
       "id": "688ae2e0-6a02-4312-a059-f7f8ec464c63",
       "name": "Main Model",
       "credentials": {
@@ -90,42 +95,326 @@
       }
     },
     {
-      "parameters": {
-        "model": "qwen/qwen3-32b",
-        "options": {
-          "maxTokensToSample": 4096,
-          "temperature": 0.2
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
-      "typeVersion": 1,
-      "position": [-560, 64],
-      "id": "8ef0293a-559a-4baa-a42d-aeacd502c7d2",
-      "name": "Groq Chat Model",
-      "credentials": {
-        "groqApi": {
-          "id": "guA6GsZjct2oknFf",
-          "name": "Groq account"
-        }
-      }
-    },
-    {
       "parameters": {},
       "type": "@n8n/n8n-nodes-langchain.toolThink",
       "typeVersion": 1.1,
-      "position": [-288, -64],
+      "position": [
+        -384,
+        0
+      ],
       "id": "88a05837-0240-4e53-9c95-63718f688612",
       "name": "Think1"
     },
     {
       "parameters": {
-        "contextWindowLength": 15
+        "contextWindowLength": 25
       },
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
-      "position": [-64, 160],
+      "position": [
+        -96,
+        64
+      ],
       "id": "a2c9a6e4-1ca2-41f2-b451-4a04a74ad9de",
       "name": "Sales Memory1"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [
+        -16,
+        0
+      ],
+      "id": "26e9b2de-505d-41bc-8691-f6e0106b1719",
+      "name": "Think2"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Utiliza esta herramienta UNICAMENTE si el usuario quiere agendar una cita o confirmar una cita",
+        "text": "={{ $fromAI('Prompt__User_Message_', ``, 'string') }}",
+        "options": {
+          "systemMessage": "=Rol: Asistente Virtual - Grupo Lotificadora\nObjetivo: Agendar citas de 1 hora de forma precisa y profesional.\nTimezone: America/Tijuana (UTC-08:00). Hoy: {{ $now }}.\n\nREGLAS CRÍTICAS (No ignorar):\nIdioma: Solo español.\nTono: Profesional, amable y conciso.\nHorario: Lunes a sábado, 08:00 - 18:00 (America/Tijuana, UTC-8).\nCerrado: Domingos.\nRESTRICCIÓN: UNICAMENTE registra la cita hasta que el usuario acepte explícitamente el horario propuesto.\n\nProceso de agendado:\n\n1. Recolección de datos (obligatoria): Solicitar cortésmente Nombre completo, Teléfono y Fecha/Hora preferida.\n2. Verificación de disponibilidad (usar herramienta CHECK_AVAILABILITY):\n - Si está fuera de horario: Informar amablemente el horario válido y pedir otro horario.\n - Si hay conflicto: Disculparse y sugerir el horario más cercano disponible el mismo día (dentro de 08:00-18:00).\n - Si está disponible: Proponer el horario y pedir confirmación explícita del usuario.\n\n3. Reserva: Solo tras confirmación explícita del usuario, usar CREATE_EVENT para crear el evento y ADD_DATA para registrar la información.\nIMPORTANTE: \nSiempre que el usuario mencione una hora, conviértela a formato ISO 8601 asegurándote de incluir el offset -08:00 (America/Tijuana, UTC-8).\nMapeo de Parámetros (CRÍTICO): Al usar CREATE_EVENT, debes extraer y usar estos datos del historial:\nNombre: Extraer nombre completo del usuario.\nTeléfono: Extraer número telefónico.\nTítulo del Evento: Debe ser estrictamente: [Nombre] - [Teléfono]. No omitas ninguno.\nHerramientas:\n\nCHECK_AVAILABILITY: Verificar disponibilidad en Google Calendar (citas de 1 hora).\nCREATE_EVENT: Crear evento en Google Calendar el Título del evento tiene que ser el Nombre y Telefono del usuario, en la descripcion agregar el concepto \"VISITA TERRENOS\" y agregar el Nombre y Telefono del usuario.\nADD_DATA: Registrar datos en Google Sheets. En la columna de fecha y hora registra la hora de la cita en formato dd/mm/yyyy HH:MM.\n\nActualizar siempre Google Calendar y Google Sheets después de confirmar cada cita.\nEjemplo: Si el usuario pide 10:00 AM, verificar disponibilidad en ese bloque de 1 hora dentro del horario permitido antes de proponer."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 3,
+      "position": [
+        -192,
+        -144
+      ],
+      "id": "a09424b6-1aa9-4158-bafc-175436faa7e3",
+      "name": "AGENTE CITAS"
+    },
+    {
+      "parameters": {
+        "resource": "calendar",
+        "calendar": {
+          "__rl": true,
+          "value": "classroom116694392117002085048@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "GL CITAS"
+        },
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start_Time', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End_Time', ``, 'string') }}",
+        "options": {
+          "outputFormat": "availability",
+          "timezone": {
+            "__rl": true,
+            "value": "America/Tijuana",
+            "mode": "list",
+            "cachedResultName": "America/Tijuana"
+          }
+        }
+      },
+      "id": "f503eb1e-79c1-4793-a5c5-1e2acca16a11",
+      "name": "CHECK_AVAILABILITY",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "position": [
+        80,
+        96
+      ],
+      "typeVersion": 1.3,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "IxAvN9l89FN3YQwg",
+          "name": "Google Calendar account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "classroom116694392117002085048@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "GL CITAS"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "id": "31b80957-3248-48f8-98d1-2239dbf0087b",
+      "name": "CREATE_EVENT",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "position": [
+        224,
+        160
+      ],
+      "typeVersion": 1.3,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "IxAvN9l89FN3YQwg",
+          "name": "Google Calendar account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1_1QldnTQqlDAGDRrDJcAzbUpH_Br4pCkMRiTsy9Oo54",
+          "mode": "list",
+          "cachedResultName": "GL CITAS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_1QldnTQqlDAGDRrDJcAzbUpH_Br4pCkMRiTsy9Oo54/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_1QldnTQqlDAGDRrDJcAzbUpH_Br4pCkMRiTsy9Oo54/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nombre": "={{ $fromAI('Nombre', ``, 'string') }}",
+            "Telefono": "={{ $fromAI('Telefono', ``, 'string') }}",
+            "Fecha/hora": "={{ $fromAI('Fecha_hora', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Nombre",
+              "displayName": "Nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Telefono",
+              "displayName": "Telefono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Fecha/hora",
+              "displayName": "Fecha/hora",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "cellFormat": "RAW"
+        }
+      },
+      "id": "67551117-0e16-47ed-83c3-84fd8597026f",
+      "name": "ADD_DATA",
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "position": [
+        352,
+        224
+      ],
+      "typeVersion": 4.5,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "qqlEzB7x5gMSf9R6",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-120b",
+        "options": {
+          "maxTokensToSample": 4096,
+          "temperature": 0
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -800,
+        -192
+      ],
+      "id": "d991b426-e1f5-4dae-9b27-9259fd8b0610",
+      "name": "GPT120b",
+      "credentials": {
+        "groqApi": {
+          "id": "guA6GsZjct2oknFf",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "meta-llama/llama-4-scout-17b-16e-instruct",
+        "options": {
+          "maxTokensToSample": 4096,
+          "temperature": 0
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -192,
+        32
+      ],
+      "id": "1806a1e0-2820-4cc9-9090-875cfc7407d0",
+      "name": "LLAMA SCOUT",
+      "credentials": {
+        "groqApi": {
+          "id": "guA6GsZjct2oknFf",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "qwen3:4b-instruct-2507-q8_0",
+        "options": {
+          "temperature": 0.1,
+          "frequencyPenalty": 1.15
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        1792,
+        -192
+      ],
+      "id": "75c14d30-5c2f-4324-9192-7339d7249587",
+      "name": "Main Model1",
+      "credentials": {
+        "ollamaApi": {
+          "id": "nT7qboXJ8Rol4xwD",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Tu única función es evaluar la pregunta del usuario segun los siguientes criterios:\nSi pregunta por precio, ubicacion o informacion sobre terrenos tu salida es una variable $json.salida=1\nSi solicita agendar una cita con vendedor o esta interesado en ver los terrenos tu salida es $json.salida=2\ncualquier otro tema diferente a los anteriores tu salida es $json.salida=3"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1792,
+        -384
+      ],
+      "id": "8a0d8c7a-d990-4d38-adae-205f24dfd37b",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "resource": "calendar",
+        "calendar": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1776,
+        -656
+      ],
+      "id": "bcfc7cbf-2c4f-46c5-a98f-ee6ab7214e5a",
+      "name": "Get availability in a calendar in Google Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "IxAvN9l89FN3YQwg",
+          "name": "Google Calendar account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "public": true,
+        "mode": "webhook",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -976,
+        -352
+      ],
+      "id": "abce1f1a-e278-4d56-aab7-0fd00b588cc0",
+      "name": "When chat message received",
+      "webhookId": "622bb77a-32c1-455a-a192-33052642ad15"
     },
     {
       "parameters": {
@@ -137,52 +426,22 @@
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
       "typeVersion": 1,
-      "position": [-160, 64],
-      "id": "1806a1e0-2820-4cc9-9090-875cfc7407d0",
-      "name": "Groq Chat Model1",
+      "position": [
+        -528,
+        32
+      ],
+      "id": "8ef0293a-559a-4baa-a42d-aeacd502c7d2",
+      "name": "QWEN3-32b",
       "credentials": {
         "groqApi": {
           "id": "guA6GsZjct2oknFf",
           "name": "Groq account"
         }
       }
-    },
-    {
-      "parameters": {},
-      "type": "@n8n/n8n-nodes-langchain.toolThink",
-      "typeVersion": 1.1,
-      "position": [112, -64],
-      "id": "26e9b2de-505d-41bc-8691-f6e0106b1719",
-      "name": "Think2"
-    },
-    {
-      "parameters": {
-        "toolDescription": "Utiliza esta herramienta UNICAMENTE si el usuario quiere agendar una cita",
-        "text": "={{ $fromAI('Prompt__User_Message_', ``, 'string') }}",
-        "options": {
-          "systemMessage": "=Eres asistente para agendar citas"
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.agentTool",
-      "typeVersion": 3,
-      "position": [-160, -160],
-      "id": "a09424b6-1aa9-4158-bafc-175436faa7e3",
-      "name": "AGENTE CITAS"
     }
   ],
   "pinData": {},
   "connections": {
-    "When chat message received": {
-      "main": [
-        [
-          {
-            "node": "Asistente General",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Think": {
       "ai_tool": [
         [
@@ -229,29 +488,7 @@
     },
     "Main Model": {
       "ai_languageModel": [
-        [
-          {
-            "node": "Asistente General",
-            "type": "ai_languageModel",
-            "index": 0
-          },
-          {
-            "node": "AGENTE CITAS",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Groq Chat Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AGENTE VENTAS",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Think1": {
@@ -276,9 +513,6 @@
         ]
       ]
     },
-    "Groq Chat Model1": {
-      "ai_languageModel": [[]]
-    },
     "Think2": {
       "ai_tool": [
         [
@@ -300,6 +534,99 @@
           }
         ]
       ]
+    },
+    "CHECK_AVAILABILITY": {
+      "ai_tool": [
+        [
+          {
+            "node": "AGENTE CITAS",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CREATE_EVENT": {
+      "ai_tool": [
+        [
+          {
+            "node": "AGENTE CITAS",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ADD_DATA": {
+      "ai_tool": [
+        [
+          {
+            "node": "AGENTE CITAS",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GPT120b": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Asistente General",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LLAMA SCOUT": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AGENTE CITAS",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    },
+    "Main Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Asistente General",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "QWEN3-32b": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AGENTE VENTAS",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": true,
@@ -307,7 +634,7 @@
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "2c809452-5b4b-400a-bb69-4c29638158d7",
+  "versionId": "8e0a3469-8eca-4b57-b328-b927001f245a",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "5e9aa1c47cbeef2ab1ac8a751a19425b0cd8512f36d2e6001327ddf89052fb3a"
