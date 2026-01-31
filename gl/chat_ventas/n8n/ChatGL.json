@@ -33,7 +33,8 @@
         "toolDescription": "Utiliza esta herramienta para CUALQUIER consulta sobre venta de terrenos, precios, servicios, mensualidades, ubicaciones, o cuando el cliente de indicios de querer comprar.",
         "text": "={{ $fromAI('Prompt__User_Message_', ``, 'string') }}",
         "options": {
-          "systemMessage": "=Eres asistente de ventas en Grupo Lotificadora, especializado en terrenos residenciales en Mexicali y Los Algodones. Objetivo: resolver dudas, calificar prospectos de forma natural y guiar hacia cierre de venta.\n\nREGLAS GENERALES:\nResponde SIEMPRE con tono profesional pero cercano, en español y máximo en 100 palabras.\nRespuestas breves, directas, sin repeticiones ni texto innecesario.\nUsa nombre del usuario solo si lo proporciona.\nTrigger de Precio: Si preguntan por costos, menciona siempre la mensualidad más baja disponible en la zona de su interés para captar atención.\nIntegra progresivamente estas 3 preguntas de precalificación obligatorias:\n  1. ¿En qué zona te interesa? (Poniente, Oriente o Los Algodones)\n  2. ¿Cuál es tu presupuesto mensual aproximado en pesos?\n  3. ¿Buscas terreno con servicios listos para construir ya o para invertir a mediano plazo?\nSi menciona competidores: \"En Grupo Lotificadora garantizamos servicios, seguridad legal y jurídica total.\"\nUsa EXCLUSIVAMENTE la información del inventario. NO inventes datos, precios ni servicios.\n\nINVENTARIO (úsalo tal cual):\nZona Poniente:\nLa Gloria: 200 m², desde $4,861/mes. Luz, agua, drenaje. Ub: carr. Progreso–Santa Isabel, 2 min entronque Tijuana, cerca Sukarne.\nEl Paraíso: 190 m², desde $4,618/mes. Luz, agua, drenaje. Ub: prol. Blvd. Lázaro Cárdenas, cerca estación bomberos y subcomandancia.\nJoyas del Paraíso 1 y 2: 190 m², desde $4,618/mes. Luz, agua, drenaje. Ub: espaldas parque acuático El Barco, 5 min Gómez Morin y nueva Garita Centro.\nJoyas del Paraíso 3: 190 m², desde $3,563/mes. Luz/Agua en curso, drenaje (2028) Ub: misma zona Joyas 1-2.\nAires del Paraíso 1 y 2: desde 190 m², desde $3,958/mes. Luz disponible; agua en curso; drenaje desde 2028. Ub: curva carr. Santa Isabel, cerca centros comerciales y Garita Centro.\nAires del Paraíso 3: 190 m², desde $3,563/mes. Luz/Agua en curso, drenaje (2028) Ub: misma zona Aires 1-2.\n\nZona Oriente:\nOasis: 300 m², desde $5,000/mes.\n\nLos Algodones:\nAlgodones y Algodones 2: 700 m², desde $10,000/mes.\n\nRecomienda según zona de interés, destacando beneficios relevantes del inventario."
+          "systemMessage": "=Eres asistente de ventas en Grupo Lotificadora, especializado en terrenos residenciales en Mexicali y Los Algodones. Objetivo: resolver dudas, calificar prospectos de forma natural y guiar hacia cierre de venta.\n\nREGLAS GENERALES:\nResponde SIEMPRE con tono profesional pero cercano, en español y máximo en 100 palabras.\nRespuestas breves, directas, sin repeticiones ni texto innecesario.\nUsa nombre del usuario solo si lo proporciona.\nTrigger de Precio: Si preguntan por costos, menciona siempre la mensualidad más baja disponible en la zona de su interés para captar atención.\nIntegra progresivamente estas 3 preguntas de precalificación obligatorias:\n  1. ¿En qué zona te interesa? (Poniente, Oriente o Los Algodones)\n  2. ¿Cuál es tu presupuesto mensual aproximado en pesos?\n  3. ¿Buscas terreno con servicios listos para construir ya o para invertir a mediano plazo?\nSi menciona competidores: \"En Grupo Lotificadora garantizamos servicios, seguridad legal y jurídica total.\"\nUsa EXCLUSIVAMENTE la información del inventario. NO inventes datos, precios ni servicios.\n\nINVENTARIO (úsalo tal cual):\nZona Poniente:\nLa Gloria: 200 m², desde $4,861/mes. Luz, agua, drenaje. Ub: carr. Progreso–Santa Isabel, 2 min entronque Tijuana, cerca Sukarne.\nEl Paraíso: 190 m², desde $4,618/mes. Luz, agua, drenaje. Ub: prol. Blvd. Lázaro Cárdenas, cerca estación bomberos y subcomandancia.\nJoyas del Paraíso 1 y 2: 190 m², desde $4,618/mes. Luz, agua, drenaje. Ub: espaldas parque acuático El Barco, 5 min Gómez Morin y nueva Garita Centro.\nJoyas del Paraíso 3: 190 m², desde $3,563/mes. Luz/Agua en curso, drenaje (2028) Ub: misma zona Joyas 1-2.\nAires del Paraíso 1 y 2: desde 190 m², desde $3,958/mes. Luz disponible; agua en curso; drenaje desde 2028. Ub: curva carr. Santa Isabel, cerca centros comerciales y Garita Centro.\nAires del Paraíso 3: 190 m², desde $3,563/mes. Luz/Agua en curso, drenaje (2028) Ub: misma zona Aires 1-2.\n\nZona Oriente:\nOasis: 300 m², desde $5,000/mes.\n\nLos Algodones:\nAlgodones y Algodones 2: 700 m², desde $10,000/mes.\n\nRecomienda según zona de interés, destacando beneficios relevantes del inventario.",
+          "enableStreaming": true
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agentTool",
@@ -70,29 +71,6 @@
       ],
       "id": "c2d55835-01ee-45aa-97db-00ca9062c366",
       "name": "Sales Memory"
-    },
-    {
-      "parameters": {
-        "model": "qwen3:4b-instruct-2507-q8_0",
-        "options": {
-          "temperature": 0.1,
-          "frequencyPenalty": 1.15
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
-      "typeVersion": 1,
-      "position": [
-        2208,
-        -336
-      ],
-      "id": "688ae2e0-6a02-4312-a059-f7f8ec464c63",
-      "name": "Main Model",
-      "credentials": {
-        "ollamaApi": {
-          "id": "nT7qboXJ8Rol4xwD",
-          "name": "Ollama account"
-        }
-      }
     },
     {
       "parameters": {},
@@ -134,7 +112,8 @@
         "toolDescription": "Utiliza esta herramienta UNICAMENTE si el usuario quiere agendar una cita o confirmar una cita",
         "text": "={{ $fromAI('Prompt__User_Message_', ``, 'string') }}",
         "options": {
-          "systemMessage": "=Rol: Asistente Virtual - Grupo Lotificadora\nObjetivo: Agendar citas de 1 hora de forma precisa y profesional.\nTimezone: America/Tijuana (UTC-08:00). Hoy: {{ $now }}.\n\nREGLAS CRÍTICAS (No ignorar):\nIdioma: Solo español.\nTono: Profesional, amable y conciso.\nHorario: Lunes a sábado, 08:00 - 18:00 (America/Tijuana, UTC-8).\nCerrado: Domingos.\nRESTRICCIÓN: UNICAMENTE registra la cita hasta que el usuario acepte explícitamente el horario propuesto.\n\nProceso de agendado:\n\n1. Recolección de datos (obligatoria): Solicitar cortésmente Nombre completo, Teléfono y Fecha/Hora preferida.\n2. Verificación de disponibilidad (usar herramienta CHECK_AVAILABILITY):\n - Si está fuera de horario: Informar amablemente el horario válido y pedir otro horario.\n - Si hay conflicto: Disculparse y sugerir el horario más cercano disponible el mismo día (dentro de 08:00-18:00).\n - Si está disponible: Proponer el horario y pedir confirmación explícita del usuario.\n\n3. Reserva: Solo tras confirmación explícita del usuario, usar CREATE_EVENT para crear el evento y ADD_DATA para registrar la información.\nIMPORTANTE: \nSiempre que el usuario mencione una hora, conviértela a formato ISO 8601 asegurándote de incluir el offset -08:00 (America/Tijuana, UTC-8).\nMapeo de Parámetros (CRÍTICO): Al usar CREATE_EVENT, debes extraer y usar estos datos del historial:\nNombre: Extraer nombre completo del usuario.\nTeléfono: Extraer número telefónico.\nTítulo del Evento: Debe ser estrictamente: [Nombre] - [Teléfono]. No omitas ninguno.\nHerramientas:\n\nCHECK_AVAILABILITY: Verificar disponibilidad en Google Calendar (citas de 1 hora).\nCREATE_EVENT: Crear evento en Google Calendar el Título del evento tiene que ser el Nombre y Telefono del usuario, en la descripcion agregar el concepto \"VISITA TERRENOS\" y agregar el Nombre y Telefono del usuario.\nADD_DATA: Registrar datos en Google Sheets. En la columna de fecha y hora registra la hora de la cita en formato dd/mm/yyyy HH:MM.\n\nActualizar siempre Google Calendar y Google Sheets después de confirmar cada cita.\nEjemplo: Si el usuario pide 10:00 AM, verificar disponibilidad en ese bloque de 1 hora dentro del horario permitido antes de proponer."
+          "systemMessage": "=Rol: Asistente Virtual - Grupo Lotificadora\nObjetivo: Agendar citas de 1 hora de forma precisa y profesional.\nTimezone: America/Tijuana (UTC-08:00). Hoy: {{ $now }}.\n\nREGLAS CRÍTICAS (No ignorar):\nIdioma: Solo español.\nTono: Profesional, amable y conciso.\nHorario: Lunes a sábado, 08:00 - 18:00 (America/Tijuana, UTC-8).\nCerrado: Domingos.\nRESTRICCIÓN: UNICAMENTE registra la cita hasta que el usuario acepte explícitamente el horario propuesto.\n\nProceso de agendado:\n\n1. Recolección de datos (obligatoria): Solicitar cortésmente Nombre completo, Teléfono y Fecha/Hora preferida.\n2. Verificación de disponibilidad (usar herramienta CHECK_AVAILABILITY):\n - Si está fuera de horario: Informar amablemente el horario válido y pedir otro horario.\n - Si hay conflicto: Disculparse y sugerir el horario más cercano disponible el mismo día (dentro de 08:00-18:00).\n - Si está disponible: Proponer el horario y pedir confirmación explícita del usuario.\n\n3. Reserva: Solo tras confirmación explícita del usuario, usar CREATE_EVENT para crear el evento y ADD_DATA para registrar la información.\nIMPORTANTE: \nSiempre que el usuario mencione una hora, conviértela a formato ISO 8601 asegurándote de incluir el offset -08:00 (America/Tijuana, UTC-8).\nMapeo de Parámetros (CRÍTICO): Al usar CREATE_EVENT, debes extraer y usar estos datos del historial:\nNombre: Extraer nombre completo del usuario.\nTeléfono: Extraer número telefónico.\nTítulo del Evento: Debe ser estrictamente: [Nombre] - [Teléfono]. No omitas ninguno.\n4. Enviar correo: Inmediatamente después de la reserva exitosa, captura toda la conversación completa del chat (incluyendo todos los mensajes del usuario y tus respuestas desde el inicio) y envíala por correo usando SEND_MAIL.\nContenido del correo:\nDatos de la cita: Nombre, Teléfono, Fecha/Hora (en formato legible: dd/mm/yyyy HH:MM America/Tijuana).\nConversación completa: Copia el historial entero del chat como texto plano o en un formato legible (ej: \"Usuario: [mensaje]\\nAsistente: [respuesta]\\n...\").\nNo omitas este paso; ejecútalo siempre después de CREATE_EVENT y ADD_DATA.\n\nHerramientas:\n\nCHECK_AVAILABILITY: Verificar disponibilidad en Google Calendar (citas de 1 hora).\nCREATE_EVENT: Crear evento en Google Calendar el Título del evento tiene que ser el Nombre y Telefono del usuario, en la descripcion agregar el concepto \"VISITA TERRENOS\" y agregar el Nombre y Telefono del usuario.\nADD_DATA: Registrar datos en Google Sheets. En la columna de fecha y hora registra la hora de la cita en formato dd/mm/yyyy HH:MM.\nSEND_MAIL: enviar por correo los datos de la cita y la conversacion completa\nActualizar siempre Google Calendar y Google Sheets después de confirmar cada cita.\nEjemplo: Si el usuario pide 10:00 AM, verificar disponibilidad en ese bloque de 1 hora dentro del horario permitido antes de proponer.",
+          "enableStreaming": true
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agentTool",
@@ -303,7 +282,7 @@
       "typeVersion": 1,
       "position": [
         -800,
-        -192
+        -144
       ],
       "id": "d991b426-e1f5-4dae-9b27-9259fd8b0610",
       "name": "GPT120b",
@@ -339,69 +318,6 @@
     },
     {
       "parameters": {
-        "model": "qwen3:4b-instruct-2507-q8_0",
-        "options": {
-          "temperature": 0.1,
-          "frequencyPenalty": 1.15
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
-      "typeVersion": 1,
-      "position": [
-        1792,
-        -192
-      ],
-      "id": "75c14d30-5c2f-4324-9192-7339d7249587",
-      "name": "Main Model1",
-      "credentials": {
-        "ollamaApi": {
-          "id": "nT7qboXJ8Rol4xwD",
-          "name": "Ollama account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "options": {
-          "systemMessage": "Tu única función es evaluar la pregunta del usuario segun los siguientes criterios:\nSi pregunta por precio, ubicacion o informacion sobre terrenos tu salida es una variable $json.salida=1\nSi solicita agendar una cita con vendedor o esta interesado en ver los terrenos tu salida es $json.salida=2\ncualquier otro tema diferente a los anteriores tu salida es $json.salida=3"
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 3.1,
-      "position": [
-        1792,
-        -384
-      ],
-      "id": "8a0d8c7a-d990-4d38-adae-205f24dfd37b",
-      "name": "AI Agent"
-    },
-    {
-      "parameters": {
-        "resource": "calendar",
-        "calendar": {
-          "__rl": true,
-          "mode": "list",
-          "value": ""
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleCalendarTool",
-      "typeVersion": 1.3,
-      "position": [
-        1776,
-        -656
-      ],
-      "id": "bcfc7cbf-2c4f-46c5-a98f-ee6ab7214e5a",
-      "name": "Get availability in a calendar in Google Calendar",
-      "credentials": {
-        "googleCalendarOAuth2Api": {
-          "id": "IxAvN9l89FN3YQwg",
-          "name": "Google Calendar account 2"
-        }
-      }
-    },
-    {
-      "parameters": {
         "public": true,
         "mode": "webhook",
         "options": {}
@@ -409,7 +325,7 @@
       "type": "@n8n/n8n-nodes-langchain.chatTrigger",
       "typeVersion": 1.4,
       "position": [
-        -976,
+        -1040,
         -352
       ],
       "id": "abce1f1a-e278-4d56-aab7-0fd00b588cc0",
@@ -421,7 +337,7 @@
         "model": "qwen/qwen3-32b",
         "options": {
           "maxTokensToSample": 4096,
-          "temperature": 0.2
+          "temperature": 0
         }
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
@@ -436,6 +352,30 @@
         "groqApi": {
           "id": "guA6GsZjct2oknFf",
           "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "daniel@grupolotificadora.com",
+        "toEmail": "=daniel@hexcode.com.mx",
+        "subject": "=NUEVA CITA DE VENTAS AGENDADA",
+        "html": "={{ $fromAI('HTML', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSendTool",
+      "typeVersion": 2.1,
+      "position": [
+        480,
+        240
+      ],
+      "id": "53504e26-0acb-4129-bea0-f9935f9b4fc9",
+      "name": "SEND_MAIL",
+      "webhookId": "da5e11bd-edb8-4c8c-a4ee-dbdefb520e24",
+      "credentials": {
+        "smtp": {
+          "id": "V5OUShzjGsnKh6KE",
+          "name": "SMTP account"
         }
       }
     }
@@ -484,11 +424,6 @@
             "index": 0
           }
         ]
-      ]
-    },
-    "Main Model": {
-      "ai_languageModel": [
-        []
       ]
     },
     "Think1": {
@@ -590,22 +525,6 @@
         ]
       ]
     },
-    "AI Agent": {
-      "main": [
-        []
-      ]
-    },
-    "Main Model1": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "When chat message received": {
       "main": [
         [
@@ -627,6 +546,22 @@
           }
         ]
       ]
+    },
+    "SEND_MAIL": {
+      "ai_tool": [
+        [
+          {
+            "node": "AGENTE CITAS",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Asistente General": {
+      "main": [
+        []
+      ]
     }
   },
   "active": true,
@@ -634,7 +569,7 @@
     "executionOrder": "v1",
     "availableInMCP": false
   },
-  "versionId": "8e0a3469-8eca-4b57-b328-b927001f245a",
+  "versionId": "ada1ced5-f135-4167-86a2-9295ff65218a",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "5e9aa1c47cbeef2ab1ac8a751a19425b0cd8512f36d2e6001327ddf89052fb3a"

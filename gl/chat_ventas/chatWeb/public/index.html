@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grupo Lotificadora</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h2>Chat con n8n</h2>
+            <div class="connection-status" id="status">
+                <span class="status-indicator"></span>
+                <span class="status-text">Conectando...</span>
+            </div>
+        </div>
+        
+        <div class="chat-messages" id="messages"></div>
+        
+        <div class="chat-input-container">
+            <div class="file-upload-container">
+                <input type="file" id="fileInput" accept="image/*,audio/*" style="display: none;">
+                <button class="file-button" id="fileButton">📎</button>
+            </div>
+            
+            <div class="voice-record-container">
+                <button class="voice-button" id="voiceButton">🎤</button>
+            </div>
+            
+            <input type="text" id="messageInput" placeholder="Escribe tu mensaje..." autocomplete="off">
+            <button id="sendButton">Enviar</button>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
