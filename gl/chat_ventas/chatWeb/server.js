@@ -15,35 +15,102 @@ const io = socketIo(server, {
   }
 });
 
-// Configuración de multer para subir archivos
+// Configuración de multer para subir archivos con organización por tipo
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadDir = 'uploads/';
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir);
+    let uploadDir = 'uploads/';
+    
+    // Determinar el directorio según el tipo de archivo
+    if (file.mimetype.startsWith('image/')) {
+      uploadDir = 'uploads/fotos/';
+    } else if (file.mimetype.startsWith('audio/')) {
+      uploadDir = 'uploads/audios/';
+    } else if (file.mimetype === 'application/pdf') {
+      uploadDir = 'uploads/documentos/';
+    } else if (
+      file.mimetype.includes('document') ||
+      file.mimetype.includes('officedocument') ||
+      file.mimetype.includes('msword') ||
+      file.mimetype.includes('vnd.openxmlformats-officedocument')
+    ) {
+      uploadDir = 'uploads/documentos/';
     }
+    
+    // Crear directorio si no existe
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+    
+    console.log(`📁 Directorio de destino: ${uploadDir} para ${file.originalname}`);
     cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname);
+    // Generar nombre de archivo único con timestamp
+    const timestamp = Date.now();
+    const randomString = Math.random().toString(36).substr(2, 9);
+    const extension = path.extname(file.originalname);
+    const baseName = path.basename(file.originalname, extension);
+    
+    const filename = `${timestamp}-${randomString}-${baseName}${extension}`;
+    console.log(`📝 Nombre de archivo generado: ${filename}`);
+    cb(null, filename);
   }
 });
 
 const upload = multer({ 
   storage: storage,
   limits: {
-    fileSize: 10 * 1024 * 1024 // 10MB límite
+    fileSize: 50 * 1024 * 1024 // 50MB límite para documentos
   },
   fileFilter: (req, file, cb) => {
-    const allowedTypes = /jpeg|jpg|png|gif|mp3|wav|ogg|m4a/;
-    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = allowedTypes.test(file.mimetype);
+    console.log(`🔍 Archivo recibido: ${file.originalname}`);
+    console.log(`📋 MIME Type: ${file.mimetype}`);
+    console.log(`📋 Extensión: ${path.extname(file.originalname)}`);
     
-    if (mimetype && extname) {
-      return cb(null, true);
-    } else {
-      cb(new Error('Solo se permiten imágenes y archivos de audio'));
+    // Extensiones y tipos MIME permitidos
+    const allowedImageExtensions = /jpeg|jpg|png|gif|bmp|webp/;
+    const allowedImageMimeTypes = /image\/(jpeg|jpg|png|gif|bmp|webp)/;
+    
+    const allowedAudioExtensions = /mp3|wav|ogg|m4a|webm|flac|aac/;
+    const allowedAudioMimeTypes = /audio\/(mp3|wav|ogg|m4a|webm|flac|aac)/;
+    
+    const allowedDocumentExtensions = /pdf|doc|docx|txt/;
+    const allowedDocumentMimeTypes = /application\/(pdf|msword|vnd\.openxmlformats-officedocument\.wordprocessingml\.document)|text\/(plain|rtf)/;
+    
+    // Extensiones y tipos MIME peligrosos (bloqueados)
+    const dangerousExtensions = /exe|bat|cmd|com|pif|scr|vbs|js|jar|php|asp|aspx|sh|ps1|py|rb|pl|cgi/;
+    const dangerousMimeTypes = /application\/(x-executable|x-msdownload|x-msdos-program|x-sh|x-python|x-ruby|x-perl|x-php|vnd\.ms-cab-compressed|x-zip-compressed|x-gzip-compressed|x-tar|x-rar-compressed)/;
+    
+    const extname = path.extname(file.originalname).toLowerCase();
+    const filename = file.originalname.toLowerCase();
+    
+    // Bloquear archivos peligrosos
+    if (dangerousExtensions.test(extname) || dangerousExtensions.test(filename) || dangerousMimeTypes.test(file.mimetype)) {
+      console.log(`🚫 ARCHIVO PELIGROSO BLOQUEADO: ${file.originalname}`);
+      return cb(new Error('Tipo de archivo no permitido por seguridad. No se permiten ejecutables, scripts, archivos comprimidos o archivos potencialmente peligrosos.'));
     }
+    
+    // Permitir imágenes
+    if (allowedImageExtensions.test(extname) && allowedImageMimeTypes.test(file.mimetype)) {
+      console.log(`✅ Archivo de imagen permitido: ${file.originalname}`);
+      return cb(null, true);
+    }
+    
+    // Permitir audios
+    if (allowedAudioExtensions.test(extname) && allowedAudioMimeTypes.test(file.mimetype)) {
+      console.log(`✅ Archivo de audio permitido: ${file.originalname}`);
+      return cb(null, true);
+    }
+    
+    // Permitir documentos
+    if (allowedDocumentExtensions.test(extname) && allowedDocumentMimeTypes.test(file.mimetype)) {
+      console.log(`✅ Archivo de documento permitido: ${file.originalname}`);
+      return cb(null, true);
+    }
+    
+    // Rechazar cualquier otro tipo
+    console.log(`❌ Archivo no permitido: ${file.originalname} (MIME: ${file.mimetype}, Ext: ${extname})`);
+    cb(new Error('Tipo de archivo no permitido. Solo se permiten: imágenes (JPEG, PNG, GIF, BMP, WebP), audio (MP3, WAV, OGG, M4A, WebM, FLAC, AAC), y documentos (PDF, Word, TXT). No se permiten ejecutables, scripts, archivos comprimidos o archivos potencialmente peligrosos.'));
   }
 });
 
@@ -185,9 +252,66 @@ const initializeChat = () => {
 
 const n8nChat = initializeChat();
 
-// Servir archivos estáticos
+// Crear directorios base si no existen
+const baseDirs = ['uploads', 'uploads/fotos', 'uploads/audios', 'uploads/documentos'];
+baseDirs.forEach(dir => {
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+    console.log(`📁 Directorio creado: ${dir}`);
+  }
+});
+
+// Servir archivos estáticos y archivos organizados
 app.use(express.static('public'));
 app.use('/uploads', express.static('uploads'));
+
+// Endpoint para listar archivos (opcional, para debugging)
+app.get('/uploads/fotos', (req, res) => {
+  listFiles('fotos', res);
+});
+
+app.get('/uploads/audios', (req, res) => {
+  listFiles('audios', res);
+});
+
+app.get('/uploads/documentos', (req, res) => {
+  listFiles('documentos', res);
+});
+
+app.get('/uploads', (req, res) => {
+  listFiles(null, res);
+});
+
+// Función helper para listar archivos
+function listFiles(type, res) {
+  let targetDir = 'uploads/';
+  
+  if (type && ['fotos', 'audios', 'documentos'].includes(type)) {
+    targetDir = `uploads/${type}/`;
+  }
+  
+  try {
+    const files = fs.readdirSync(targetDir);
+    const fileList = files.map(file => {
+      const filePath = path.join(targetDir, file);
+      const stats = fs.statSync(filePath);
+      return {
+        name: file,
+        size: stats.size,
+        created: stats.birthtime,
+        url: `/uploads/${type ? type + '/' : ''}${file}`
+      };
+    });
+    
+    res.json({
+      type: type || 'todos',
+      files: fileList,
+      total: files.length
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Error al leer directorio: ' + error.message });
+  }
+}
 
 // Endpoint para subir archivos
 app.post('/upload', upload.single('file'), (req, res) => {
@@ -195,12 +319,31 @@ app.post('/upload', upload.single('file'), (req, res) => {
     return res.status(400).json({ error: 'No se subió ningún archivo' });
   }
   
+  // Determinar el tipo de archivo para la URL correcta
+  let fileType = 'otros';
+  if (req.file.mimetype.startsWith('image/')) {
+    fileType = 'fotos';
+  } else if (req.file.mimetype.startsWith('audio/')) {
+    fileType = 'audios';
+  } else if (req.file.mimetype === 'application/pdf' || req.file.mimetype.includes('document') || req.file.mimetype.includes('officedocument')) {
+    fileType = 'documentos';
+  }
+  
+  const fileUrl = `/uploads/${fileType}/${req.file.filename}`;
+  
+  console.log(`📎 Archivo guardado exitosamente:`);
+  console.log(`   - Nombre original: ${req.file.originalname}`);
+  console.log(`   - Tipo: ${fileType}`);
+  console.log(`   - URL: ${fileUrl}`);
+  console.log(`   - Tamaño: ${(req.file.size / 1024).toFixed(2)} KB`);
+  
   res.json({
     filename: req.file.filename,
     originalName: req.file.originalname,
     mimetype: req.file.mimetype,
     size: req.file.size,
-    url: `/uploads/${req.file.filename}`
+    type: fileType,
+    url: fileUrl
   });
 });
 
@@ -265,18 +408,22 @@ io.on('connection', (socket) => {
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-  console.log(`\n🏢 CHAT GRUPO LOTIFICADORA - MODO n8n EXCLUSIVO`);
+  console.log(`\n🏢 CHAT GRUPO LOTIFICADORA - ARCHIVOS ORGANIZADOS`);
   console.log(`================================================`);
   console.log(`🌐 Servidor: http://localhost:${PORT}`);
-  console.log(`🤖 Workflow: chat.json (REQUERIDO)`);
+  console.log(`🤖 Workflow: chat_with_session.json`);
   console.log(`📋 Webhook: http://localhost:5678/webhook/chat`);
-  console.log(`\n🚨 IMPORTANTE: EL CHAT NO FUNCIONARÁ SIN CONFIGURAR n8n`);
+  console.log(`\n📁 Organización de archivos:`);
+  console.log(`   📸 Imágenes → uploads/fotos/`);
+  console.log(`   🎤 Audio → uploads/audios/`);
+  console.log(`   📄 Documentos → uploads/documentos/`);
+  console.log(`\n🔒 Seguridad: Scripts y ejecutables bloqueados`);
+  console.log(`\n📂 Listar archivos: http://localhost:${PORT}/uploads/[fotos|audios|documentos]`);
   console.log(`\n📋 PASOS OBLIGATORIOS:`);
   console.log(`   1. Abre: http://localhost:5678`);
-  console.log(`   2. Importa: chat.json`);
-  console.log(`   3. Activa: Toggle ON (esquina superior derecha)`);
-  console.log(`   4. Configura: Credenciales (Google, Groq, Email)`);
+  console.log(`   2. Importa: chat_with_session.json`);
+  console.log(`   3. Activa: Toggle ON`);
+  console.log(`   4. Configura: Groq API`);
   console.log(`\n🧪 Para verificar: ./verify-workflow.sh`);
-  console.log(`\n⚠️  NO HAY MODO SIMULADO - SOLO FUNCIONA CON n8n`);
-  console.log(`\n🎇 Chat GL esperando configuración de n8n...\n`);
+  console.log(`\n🎇 Chat GL con organización de archivos listo!\n`);
 });

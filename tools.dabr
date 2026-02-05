@@ -1,0 +1,13 @@
+### CLAUDECODE
+/***
+ * 1. instalar el modelo:
+ *    ollama pull qwen2.5-coder:7b
+ * 2. establecer las variables de entorno para Claude Code
+ *    export ANTHROPIC_AUTH_TOKEN=ollama
+ *    export ANTHROPIC_BASE_URL=http://localhost:11434
+ * 3. Correr Claude Code con el modelo de ollama
+ * 
+ *
+ *
+ *           e
+ * ** */q
