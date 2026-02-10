@@ -74,7 +74,7 @@ const upload = multer({
     const allowedImageMimeTypes = /image\/(jpeg|jpg|png|gif|bmp|webp)/;
 
     const allowedAudioExtensions = /mp3|wav|ogg|m4a|webm|flac|aac/;
-    const allowedAudioMimeTypes = /audio\/(mp3|wav|ogg|m4a|webm|flac|aac)/;
+    const allowedAudioMimeTypes = /(audio|video)\/(mp3|wav|ogg|m4a|webm|flac|aac)/;
 
     const allowedDocumentExtensions = /pdf|doc|docx|txt/;
     const allowedDocumentMimeTypes =
@@ -112,7 +112,16 @@ const upload = multer({
       return cb(null, true);
     }
 
-    // Permitir audios
+    // Permitir imágenes
+    if (
+      allowedImageExtensions.test(extname) &&
+      allowedImageMimeTypes.test(file.mimetype)
+    ) {
+      console.log(`✅ Archivo de imagen permitido: ${file.originalname}`);
+      return cb(null, true);
+    }
+
+    // Permitir audios (incluyendo webm que puede ser video/webm para audio)
     if (
       allowedAudioExtensions.test(extname) &&
       allowedAudioMimeTypes.test(file.mimetype)
@@ -148,9 +157,10 @@ let chatInstance = null;
 const initializeChat = () => {
   // Usar la production URL de n8n para workflow de Grupo Lotificadora
 
-  //const webhookUrl = process.env.N8N_WEBHOOK_URL || "http://localhost:5678/webhook/chat";
   const webhookUrl =
-    process.env.N8N_WEBHOOK_URL ||
+    process.env.N8N_WEBHOOK_URL || "http://localhost:5678/webhook/chat";
+  //const webhookUrl =
+  process.env.N8N_WEBHOOK_URL ||
     "https://n8n.srv655139.hstgr.cloud/webhook/chat";
   console.log(
     `🏢 Iniciando chat Grupo Lotificadora con webhook: ${webhookUrl}`,
@@ -386,7 +396,7 @@ app.post("/upload", upload.single("file"), (req, res) => {
   let fileType = "otros";
   if (req.file.mimetype.startsWith("image/")) {
     fileType = "fotos";
-  } else if (req.file.mimetype.startsWith("audio/")) {
+  } else if (req.file.mimetype.startsWith("audio/") || req.file.mimetype.startsWith("video/webm")) {
     fileType = "audios";
   } else if (
     req.file.mimetype === "application/pdf" ||

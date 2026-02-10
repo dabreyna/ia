@@ -11,10 +11,10 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [
-        7136,
-        1600
+        0,
+        0
       ],
-      "id": "678e2b93-1e3d-4766-9107-ce71e3ef8070",
+      "id": "f4324fe1-7c9f-498c-8e95-244a2d38a535",
       "name": "Chat Webhook",
       "webhookId": "chat-gl-webhook-session"
     },
@@ -25,10 +25,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        7360,
-        1600
+        224,
+        0
       ],
-      "id": "d6120ed3-c954-4337-9f6e-eda52945f268",
+      "id": "881723db-ce65-42f5-99f9-38d88473cc89",
       "name": "Extraer SessionId"
     },
     {
@@ -36,30 +36,30 @@
         "promptType": "define",
         "text": "={{ $('Chat Webhook').item.json.body.message }}",
         "options": {
-          "systemMessage": "Rol: Recepcionista virtual de 'Grupo Lotificadora'\n\nTareas:\nSIEMPRE al iniciar cada conversacion debes saludar y dar la bienvenida al usuario en tono amable y profesional al iniciar la conversarion preguntar como puedes ayudarlo.\n\nEvaluar las preguntas del usuario:\n  - Si la pregunta esta relacionada con solicitar cualquier información sobre los terrenos en venta DEBES usar la herramienta 'AGENTE VENTAS'\n  - Si el usuario está interesado en agendar una cita, ver los terrenos o hablar con un vendedor DEBES usar la herramienta 'AGENTE CITAS'\n\nNo intentes responder tú mismo sobre inventarios; delega siempre esa tarea a la herramienta especializada",
+          "systemMessage": "=Rol: Recepcionista virtual de 'Grupo Lotificadora'\nTimezone: America/Tijuana (UTC-08:00).\nTareas:\nSIEMPRE al iniciar cada conversacion debes saludar y dar la bienvenida al usuario en tono amable y profesional al iniciar la conversarion preguntar como puedes ayudarlo.\n\nEvaluar el mensaje del usuario:\n  - Si esta relacionado con solicitar cualquier información sobre los terrenos en venta DEBES usar la herramienta 'AGENTE VENTAS'\n  - Si el usuario está interesado en agendar una cita, ver los terrenos o hablar con un vendedor DEBES usar la herramienta 'AGENTE CITAS'\n\nNo intentes responder tú mismo sobre inventarios; delega siempre esa tarea a la herramienta especializada\n\nDo not provide speculative or unverified information. Always rely on the knowledge base or direct the customer to official resources.",
           "enableStreaming": false
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        7704,
-        1600
+        576,
+        0
       ],
-      "id": "0d93881e-1c43-491f-9326-99c350e9127f",
+      "id": "e9f8c7ca-3afe-4654-9482-59cb8286324a",
       "name": "Asistente General"
     },
     {
       "parameters": {
-        "contextWindowLength": 10
+        "contextWindowLength": 25
       },
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        7712,
-        1824
+        576,
+        224
       ],
-      "id": "19395746-5e95-40e4-a325-ed6d0f94b2a5",
+      "id": "7c2ec2b3-ec04-4f4f-a744-210f860a5354",
       "name": "MainMEM"
     },
     {
@@ -67,10 +67,10 @@
       "type": "@n8n/n8n-nodes-langchain.toolThink",
       "typeVersion": 1.1,
       "position": [
-        7840,
-        1824
+        704,
+        224
       ],
-      "id": "5539113e-c35c-4321-bebf-9052e0795301",
+      "id": "b2c260de-1bd9-44fd-b4e5-23bbdf209629",
       "name": "Think"
     },
     {
@@ -82,10 +82,10 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.1,
       "position": [
-        9216,
-        1600
+        2080,
+        0
       ],
-      "id": "a7519627-ec94-45df-8627-97be80eecd02",
+      "id": "9975e01a-70c9-4836-95aa-3729e853e96c",
       "name": "Respuesta Webhook"
     },
     {
@@ -99,14 +99,14 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
       "typeVersion": 1,
       "position": [
-        7584,
-        1824
+        448,
+        224
       ],
-      "id": "99030cb9-b8f1-4dc6-ab86-8ef94424d441",
+      "id": "7ebffe81-b3e6-422a-b153-8810dcc43e43",
       "name": "GPT120b",
       "credentials": {
         "groqApi": {
-          "id": "guA6GsZjct2oknFf",
+          "id": "9L9mrC93UVrDEUs4",
           "name": "Groq account"
         }
       }
@@ -118,10 +118,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        8368,
-        2032
+        1232,
+        432
       ],
-      "id": "596e6422-c605-4dde-ab2c-7dc25563e826",
+      "id": "36028617-5b97-4f30-84e4-191ff818f1f7",
       "name": "Sales Memory1"
     },
     {
@@ -129,10 +129,10 @@
       "type": "@n8n/n8n-nodes-langchain.toolThink",
       "typeVersion": 1.1,
       "position": [
-        8496,
-        2032
+        1360,
+        432
       ],
-      "id": "10b8665d-a2bb-4cd8-b89d-e3debd15fed4",
+      "id": "1cc9bb15-259e-4b30-bb79-dbdbc87e439e",
       "name": "Think2"
     },
     {
@@ -156,18 +156,18 @@
           }
         }
       },
-      "id": "b56ac1e7-14e3-4756-a349-fdadcaecc523",
+      "id": "92019f35-e0f6-4553-af30-a86c835f46ee",
       "name": "CHECK_AVAILABILITY",
       "type": "n8n-nodes-base.googleCalendarTool",
       "position": [
-        8624,
-        2032
+        1488,
+        432
       ],
       "typeVersion": 1.3,
       "credentials": {
         "googleCalendarOAuth2Api": {
-          "id": "IxAvN9l89FN3YQwg",
-          "name": "Google Calendar account 2"
+          "id": "P8ZcyTmZX5zhNnIO",
+          "name": "Google Calendar account"
         }
       }
     },
@@ -186,18 +186,18 @@
           "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
         }
       },
-      "id": "f478495d-25ab-446b-9317-28b54943cb03",
+      "id": "c06f8073-8f0c-4a33-addc-03917b29c15a",
       "name": "CREATE_EVENT",
       "type": "n8n-nodes-base.googleCalendarTool",
       "position": [
-        8752,
-        2032
+        1616,
+        432
       ],
       "typeVersion": 1.3,
       "credentials": {
         "googleCalendarOAuth2Api": {
-          "id": "IxAvN9l89FN3YQwg",
-          "name": "Google Calendar account 2"
+          "id": "P8ZcyTmZX5zhNnIO",
+          "name": "Google Calendar account"
         }
       }
     },
@@ -265,17 +265,17 @@
           "cellFormat": "RAW"
         }
       },
-      "id": "956be936-7b9e-4ad0-9412-0c5727c14ba2",
+      "id": "e6249cf4-afd1-4851-a8e9-7e8ec0925b99",
       "name": "ADD_DATA",
       "type": "n8n-nodes-base.googleSheetsTool",
       "position": [
-        8880,
-        2032
+        1744,
+        432
       ],
       "typeVersion": 4.5,
       "credentials": {
         "googleSheetsOAuth2Api": {
-          "id": "qqlEzB7x5gMSf9R6",
+          "id": "z2fzbLBpq57cnwiL",
           "name": "Google Sheets account"
         }
       }
@@ -291,30 +291,30 @@
       "type": "n8n-nodes-base.emailSendTool",
       "typeVersion": 2.1,
       "position": [
-        9008,
-        2032
+        1872,
+        432
       ],
-      "id": "582e5604-73dd-4c0e-a203-202ec52c0cfd",
+      "id": "34c6076b-e549-45b0-9796-a6c7242e2fc4",
       "name": "SEND_MAIL",
       "webhookId": "da5e11bd-edb8-4c8c-a4ee-dbdefb520e24",
       "credentials": {
         "smtp": {
-          "id": "V5OUShzjGsnKh6KE",
+          "id": "UwkVaJNrf3WJxXA9",
           "name": "SMTP account"
         }
       }
     },
     {
       "parameters": {
-        "contextWindowLength": 15
+        "contextWindowLength": 25
       },
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        7984,
-        2032
+        848,
+        432
       ],
-      "id": "474e3ead-48f7-4442-aac4-07d3583fd0bf",
+      "id": "53ac7349-ecfc-4b56-afca-7de090691ca9",
       "name": "Sales Memory2"
     },
     {
@@ -322,10 +322,10 @@
       "type": "@n8n/n8n-nodes-langchain.toolThink",
       "typeVersion": 1.1,
       "position": [
-        8112,
-        2032
+        976,
+        432
       ],
-      "id": "e61bdd90-e3bd-4eb2-a897-657f9260825c",
+      "id": "ecee17cb-3b61-4430-9b7e-521b7b9e8a80",
       "name": "Think3"
     },
     {
@@ -339,14 +339,14 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
       "typeVersion": 1,
       "position": [
-        8240,
-        2032
+        1104,
+        432
       ],
-      "id": "68923562-84b1-47eb-aa63-6289792ea481",
+      "id": "f36d80ca-c314-42fd-8f43-9b35fcb6bf60",
       "name": "LLAMA SCOUT1",
       "credentials": {
         "groqApi": {
-          "id": "guA6GsZjct2oknFf",
+          "id": "9L9mrC93UVrDEUs4",
           "name": "Groq account"
         }
       }
@@ -362,14 +362,14 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
       "typeVersion": 1,
       "position": [
-        7856,
-        2032
+        720,
+        432
       ],
-      "id": "743f36e0-0641-4414-80d2-40d18eae2ca1",
+      "id": "2919b8fd-553d-4088-9ca1-d9fabf063784",
       "name": "QWEN3-32b1",
       "credentials": {
         "groqApi": {
-          "id": "guA6GsZjct2oknFf",
+          "id": "9L9mrC93UVrDEUs4",
           "name": "Groq account"
         }
       }
@@ -379,17 +379,17 @@
         "toolDescription": "Utiliza esta herramienta para CUALQUIER consulta sobre venta de terrenos, precios, servicios, mensualidades, ubicaciones, o cuando el cliente de indicios de querer comprar.",
         "text": "={{ $('Chat Webhook').item.json.body.message }}",
         "options": {
-          "systemMessage": "=Eres asistente de ventas en Grupo Lotificadora, especializado en terrenos residenciales en Mexicali y Los Algodones. Objetivo: resolver dudas, calificar prospectos de forma natural y guiar hacia cierre de venta.\n\nREGLAS GENERALES:\nResponde SIEMPRE con tono profesional pero cercano, en español y máximo en 100 palabras.\nRespuestas breves, directas, sin repeticiones ni texto innecesario.\nUsa nombre del usuario solo si lo proporciona.\nTrigger de Precio: Si preguntan por costos, menciona siempre la mensualidad más baja disponible en la zona de su interés para captar atención.\nIntegra progresivamente estas 3 preguntas de precalificación obligatorias:\n  1. ¿En qué zona te interesa? (Poniente, Oriente o Los Algodones)\n  2. ¿Cuál es tu presupuesto mensual aproximado en pesos?\n  3. ¿Buscas terreno con servicios listos para construir ya o para invertir a mediano plazo?\nSi menciona competidores: \"En Grupo Lotificadora garantizamos servicios, seguridad legal y jurídica total.\"\nUsa EXCLUSIVAMENTE la información del inventario. NO inventes datos, precios ni servicios.\n\nINVENTARIO (úsalo tal cual):\nZona Poniente:\nLa Gloria: 200 m², desde $4,861/mes. Luz, agua, drenaje. Ub: carr. Progreso–Santa Isabel, 2 min entronque Tijuana, cerca Sukarne.\nEl Paraíso: 190 m², desde $4,618/mes. Luz, agua, drenaje. Ub: prol. Blvd. Lázaro Cárdenas, cerca estación bomberos y subcomandancia.\nJoyas del Paraíso 1 y 2: 190 m², desde $4,618/mes. Luz, agua, drenaje. Ub: espaldas parque acuático El Barco, 5 min Gómez Morin y nueva Garita Centro.\nJoyas del Paraíso 3: 190 m², desde $3,563/mes. Luz/Agua en curso, drenaje (2028) Ub: misma zona Joyas 1-2.\nAires del Paraíso 1 y 2: desde 190 m², desde $3,958/mes. Luz disponible; agua en curso; drenaje desde 2028. Ub: curva carr. Santa Isabel, cerca centros comerciales y Garita Centro.\nAires del Paraíso 3: 190 m², desde $3,563/mes. Luz/Agua en curso, drenaje (2028) Ub: misma zona Aires 1-2.\n\nZona Oriente:\nOasis: 300 m², desde $5,000/mes.\n\nLos Algodones:\nAlgodones y Algodones 2: 700 m², desde $10,000/mes.\n\nRecomienda según zona de interés, destacando beneficios relevantes del inventario.",
+          "systemMessage": "=Eres asistente de ventas en Grupo Lotificadora, especializado en terrenos residenciales en Mexicali y Los Algodones. Objetivo: resolver dudas, calificar prospectos de forma natural y guiar hacia cierre de venta.\n\nREGLAS GENERALES:\nResponde SIEMPRE con tono profesional pero cercano, en español y máximo en 100 palabras.\nRespuestas breves, directas, sin repeticiones ni texto innecesario.\nSiempre responde en forma de lista NUNCA en forma de Tabla.\nUsa nombre del usuario solo si lo proporciona.\nTrigger de Precio: Si preguntan por costos, menciona siempre la mensualidad más baja disponible en la zona de su interés para captar atención.\nIntegra progresivamente estas 3 preguntas de precalificación obligatorias:\n  1. ¿En qué zona te interesa? (Poniente, Oriente o Los Algodones)\n  2. ¿Cuál es tu presupuesto mensual aproximado en pesos?\n  3. ¿Buscas terreno con servicios listos para construir ya o para invertir a mediano plazo?\nSi menciona competidores: \"En Grupo Lotificadora garantizamos servicios, seguridad legal y jurídica total.\"\nUsa EXCLUSIVAMENTE la información del inventario. NO inventes datos, precios ni servicios.\n\nIMPORTANTE: Recuerda que todas las sucursales de Grupo Lotificadora se encuentran en la ciudad de Mexicali, Baja California. si el cliente solicita como llegar a cada fraccionamiento deberas recomendar hablar con un Asesor de Ventas para una atención más personalizada.\n\nINVENTARIO (úsalo tal cual):\nZona Poniente:\nLa Gloria: 200 m², desde $4,861/mes. Luz, agua, drenaje. Ub: carr. Progreso–Santa Isabel, 2 min entronque Tijuana, cerca Sukarne.\nEl Paraíso: 190 m², desde $4,618/mes. Luz, agua, drenaje. Ub: prol. Blvd. Lázaro Cárdenas, cerca estación bomberos y subcomandancia.\nJoyas del Paraíso 1 y 2: 190 m², desde $4,618/mes. Luz, agua, drenaje. Ub: espaldas parque acuático El Barco, 5 min Gómez Morin y nueva Garita Centro.\nJoyas del Paraíso 3: 190 m², desde $3,563/mes. Luz/Agua en curso, drenaje (2028) Ub: misma zona Joyas 1-2.\nAires del Paraíso 1 y 2: desde 190 m², desde $3,958/mes. Luz disponible; agua en curso; drenaje desde 2028. Ub: curva carr. Santa Isabel, cerca centros comerciales y Garita Centro.\nAires del Paraíso 3: 190 m², desde $3,563/mes. Luz/Agua en curso, drenaje (2028) Ub: misma zona Aires 1-2.\n\nZona Oriente:\nOasis: 240 m², desde $6,666.67/mes. Luz, agua, drenaje, listos para escriturar. Ub:En Islas Agrarias A, cerca del Hospital Materno Infantil, Plaza Sendero, COBACH Vasconcelos y más.\nManantiales: 450 m², desde $9,375.00/mes. Luz, agua, drenaje, listos para escriturar. Ub:A 5 minutos del Aeropuerto Internacional de Mexicali, Manantiales está en Islas Agrarias Grupo B.\nSesvania:300 m², desde $7,291.67.00/mes. Luz, agua, drenaje, listos para escriturar. Ub:Junto al poblado Ejido Cuernavaca a 3 minutos de carretera a San Luis.\n\nLos Algodones:\nAlgodones: 180 m², desde $3,125.00/mes.\nValle Fundadores: 180 m², desde $3,125.00/mes.Luz/Agua en curso, drenaje (2028)\n\nFINANCIAMIENTO:\nGL 120: 120 mensualidades.\nGL 144: 144 mensualidades.\nGL Express: 36 mensualidades.\nContado: 1 único pago.\nNo se acepta crédito INFONAVIT.\nNo se requiere pago de enganche solo el pago de la primer mensualidad.\n\nREQUISITOS DE CONTRATACIÓN:\nIne, comprobante de domicilio (no mayor a 3 meses), pago de la primera mensualidad.\n\nOPCIONES DE PAGO: Efectivo, domiciliación, App, Pago en línea.\n\nRecomienda según zona de interés, destacando beneficios relevantes del inventario.",
           "enableStreaming": true
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agentTool",
       "typeVersion": 3,
       "position": [
-        7968,
-        1824
+        832,
+        224
       ],
-      "id": "0cbd0fb7-c74a-473c-95cd-66308a8735d2",
+      "id": "b0b9ee4c-3432-40a0-b87c-9ca1852cb814",
       "name": "AGENTE VENTAS"
     },
     {
@@ -404,10 +404,10 @@
       "type": "@n8n/n8n-nodes-langchain.agentTool",
       "typeVersion": 3,
       "position": [
-        8544,
-        1824
+        1408,
+        224
       ],
-      "id": "d2a31635-8519-47fb-983f-ff92ab98e241",
+      "id": "23b91c72-5779-4b36-b729-187ab8b14f2f",
       "name": "AGENTE CITAS"
     }
   ],
@@ -618,35 +618,36 @@
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "versionId": "f088c0d1-e4e9-435a-9c66-a487093dca85",
+  "versionId": "f6c533e7-5111-48c6-a64a-a76388318368",
   "meta": {
-    "instanceId": "5e9aa1c47cbeef2ab1ac8a751a19425b0cd8512f36d2e6001327ddf89052fb3a"
+    "templateCredsSetupCompleted": true,
+    "instanceId": "79c796f714ed85763c907c0ff5d662bf42056a49768b5ef9d3b919686c192ced"
   },
-  "id": "vKgPDxrlSFDmy0hA5JMAo",
+  "id": "NkdaJIn478Ye_m_sW4Doh",
   "tags": [
     {
-      "name": "Grupo Lotificadora",
-      "id": "Qwzl5zU2PtREQKLC",
-      "updatedAt": "2026-01-30T20:53:49.781Z",
-      "createdAt": "2026-01-30T20:53:49.781Z"
+      "updatedAt": "2026-02-05T01:50:43.136Z",
+      "createdAt": "2026-02-05T01:50:43.136Z",
+      "id": "40JhIVz9jYoNP27J",
+      "name": "Chat GL"
     },
     {
-      "name": "Chat GL",
-      "id": "imFtoT3SpjwXqqJw",
-      "updatedAt": "2026-01-30T20:53:49.777Z",
-      "createdAt": "2026-01-30T20:53:49.777Z"
-    },
-    {
-      "updatedAt": "2026-01-30T20:30:38.838Z",
-      "createdAt": "2026-01-30T20:30:38.838Z",
-      "id": "uc09Rhnfgk6tYUSi",
+      "updatedAt": "2026-02-05T01:50:43.147Z",
+      "createdAt": "2026-02-05T01:50:43.147Z",
+      "id": "Ti4zfy41N4rJOxU5",
       "name": "Chat"
     },
     {
-      "name": "Session Fix",
-      "id": "HM1fiNxM4lyGS9BW",
-      "updatedAt": "2026-01-31T00:16:33.896Z",
-      "createdAt": "2026-01-31T00:16:33.896Z"
+      "updatedAt": "2026-02-05T01:50:43.144Z",
+      "createdAt": "2026-02-05T01:50:43.144Z",
+      "id": "TjLl9okZ4ZDaUdhL",
+      "name": "Grupo Lotificadora"
+    },
+    {
+      "updatedAt": "2026-02-05T01:50:43.141Z",
+      "createdAt": "2026-02-05T01:50:43.141Z",
+      "id": "V7lmf72IhEgE2Qtv",
+      "name": "Session Fix"
     }
   ]
 }

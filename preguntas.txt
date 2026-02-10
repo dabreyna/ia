@@ -25,3 +25,10 @@ Ubicacion de donde están
 ¿Ya se puede escriturar?
 ¿Algún número para pedir información? Respuesta: '686 905-2104'
 
+
+
+Reporte enero ventas,
+nombre, numero y correo
+
+
+necesito que crees un chat el cual se pueda conectar a n8n, este chat debe usar o basarse en el modulo @n8n/chat de npm, este chat debera poder enviar y recibir mensajes a n8n, asi como tambien podra enviar archivos de audio o imagenes y recibir arhivos de audio
