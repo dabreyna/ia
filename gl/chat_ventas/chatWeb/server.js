@@ -157,11 +157,8 @@ let chatInstance = null;
 const initializeChat = () => {
   // Usar la production URL de n8n para workflow de Grupo Lotificadora
 
-  const webhookUrl =
-    process.env.N8N_WEBHOOK_URL || "http://localhost:5678/webhook/chat";
-  //const webhookUrl =
-  process.env.N8N_WEBHOOK_URL ||
-    "https://n8n.srv655139.hstgr.cloud/webhook/chat";
+  //const webhookUrl = process.env.N8N_WEBHOOK_URL || "http://localhost:5678/webhook/chat";
+  const webhookUrl = process.env.N8N_WEBHOOK_URL ||"https://n8n.srv655139.hstgr.cloud/webhook/chat";
   console.log(
     `🏢 Iniciando chat Grupo Lotificadora con webhook: ${webhookUrl}`,
   );

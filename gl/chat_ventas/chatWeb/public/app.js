@@ -51,13 +51,13 @@ class ChatApp {
     onConnect() {
         this.statusText.textContent = 'Conectado';
         this.statusIndicator.classList.add('connected');
-        this.addSystemMessage('Conectado al servidor de chat');
+        //this.addSystemMessage('Conectado al servidor de chat');
     }
     
     onDisconnect() {
         this.statusText.textContent = 'Desconectado';
         this.statusIndicator.classList.remove('connected');
-        this.addSystemMessage('Desconectado del servidor');
+        //this.addSystemMessage('Desconectado del servidor');
     }
     
     sendMessage() {
