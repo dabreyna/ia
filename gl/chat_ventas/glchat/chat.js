@@ -192,7 +192,7 @@ class ChatClient {
       this.scrollToBottom();
 
       // 2. "Dura" 2.3 segundos pausando la ejecución aquí
-      await new Promise(resolve => setTimeout(resolve, 2300));
+      await new Promise(resolve => setTimeout(resolve, 10));
     }
 
   hideTypingIndicator() {
