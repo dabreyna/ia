@@ -61,7 +61,8 @@ class ChatClient {
 
   async sendMessage() {
     const text = this.messageInput.value.trim();
-    const n8nWebhookUrl = "https://n8n.srv655139.hstgr.cloud/webhook/chat";
+    //const n8nWebhookUrl = "https://n8n.srv655139.hstgr.cloud/webhook/chat";
+    const n8nWebhookUrl = "http://localhost:5678/webhook/chatgl";
 
     if (!text) {
       return;
