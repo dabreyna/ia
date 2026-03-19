@@ -2,7 +2,6 @@ class ChatClient {
   constructor() {
     this.sessionId = this.generateSessionId();
     this.firstMessage = false;
-
     this.initElements();
     this.initEventListeners();
     this.initSession();
@@ -10,9 +9,7 @@ class ChatClient {
 
   generateSessionId() {
     localStorage.clear();
-    return (
-      "session-" + Date.now() + "-" + Math.random().toString(36).substr(2, 9)
-    );
+    return ("session-" + Date.now() + "-" + Math.random().toString(36).slice(2,11));
   }
 
   initElements() {
@@ -61,8 +58,8 @@ class ChatClient {
 
   async sendMessage() {
     const text = this.messageInput.value.trim();
-    //const n8nWebhookUrl = "https://n8n.srv655139.hstgr.cloud/webhook/chat";
-    const n8nWebhookUrl = "http://localhost:5678/webhook/chatgl";
+    const n8nWebhookUrl = "https://n8n.srv655139.hstgr.cloud/webhook/chat";
+    // const n8nWebhookUrl = "http://localhost:5678/webhook/chatgl";
 
     if (!text) {
       return;
@@ -186,15 +183,15 @@ class ChatClient {
     this.scrollToBottom();
   }
 
-    async showTypingIndicator() {
-      // 1. Se muestra el indicador inmediatamente
-      this.typingIndicator.style.display = "flex";
-      this.chatMessages.appendChild(this.typingIndicator);
-      this.scrollToBottom();
+  async showTypingIndicator() {
+    // 1. Se muestra el indicador inmediatamente
+    this.typingIndicator.style.display = "flex";
+    this.chatMessages.appendChild(this.typingIndicator);
+    this.scrollToBottom();
 
-      // 2. "Dura" 2.3 segundos pausando la ejecución aquí
-      await new Promise(resolve => setTimeout(resolve, 10));
-    }
+    // 2. "Dura" 2.3 segundos pausando la ejecución aquí
+    await new Promise((resolve) => setTimeout(resolve, 10));
+  }
 
   hideTypingIndicator() {
     this.typingIndicator.style.display = "none";
