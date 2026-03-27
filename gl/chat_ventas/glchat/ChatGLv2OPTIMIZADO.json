@@ -1,0 +1,958 @@
+{
+  "name": "ChatGLv2",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "chat",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -336,
+        32
+      ],
+      "id": "6c908c12-a4b1-4d5a-9b69-7a117bfd53aa",
+      "name": "Chat Webhook",
+      "webhookId": "chat-gl-webhook-session"
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 6
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -64,
+        256
+      ],
+      "id": "18a3e9be-af50-43ad-9749-edbdc86dfd47",
+      "name": "MainMEM"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [
+        64,
+        256
+      ],
+      "id": "e9d28c42-7a84-4340-a730-293001e9ebc1",
+      "name": "Think"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        2496,
+        48
+      ],
+      "id": "196927c5-eb52-41f8-ae87-9bd7aa96cb10",
+      "name": "Respuesta Webhook"
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 2
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        592,
+        464
+      ],
+      "id": "cb6c692c-acd4-4667-876f-147be39f9ee3",
+      "name": "Sales Memory1"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [
+        720,
+        608
+      ],
+      "id": "5ed00148-cf77-4168-878b-e57b357d6a7e",
+      "name": "Think2"
+    },
+    {
+      "parameters": {
+        "resource": "calendar",
+        "calendar": {
+          "__rl": true,
+          "value": "classroom116694392117002085048@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "GL CITAS"
+        },
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start_Time', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End_Time', ``, 'string') }}",
+        "options": {}
+      },
+      "id": "f38a037d-035a-4bd4-846a-a8fb2c133f11",
+      "name": "CHECK_AVAILABILITY",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "position": [
+        848,
+        464
+      ],
+      "typeVersion": 1.3,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "5LhU4nXvUkxvhrE5",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "classroom116694392117002085048@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "GL CITAS"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "id": "e73e5c70-ae06-4bed-b32a-f3f3245179a3",
+      "name": "CREATE_EVENT",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "position": [
+        976,
+        464
+      ],
+      "typeVersion": 1.3,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "5LhU4nXvUkxvhrE5",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1_1QldnTQqlDAGDRrDJcAzbUpH_Br4pCkMRiTsy9Oo54",
+          "mode": "list",
+          "cachedResultName": "GL CITAS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_1QldnTQqlDAGDRrDJcAzbUpH_Br4pCkMRiTsy9Oo54/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Hoja 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_1QldnTQqlDAGDRrDJcAzbUpH_Br4pCkMRiTsy9Oo54/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nombre": "={{ $fromAI('Nombre', ``, 'string') }}",
+            "Telefono": "={{ $fromAI('Telefono', ``, 'string') }}",
+            "Fecha/hora": "={{ $fromAI('Fecha_hora', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Nombre",
+              "displayName": "Nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Telefono",
+              "displayName": "Telefono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Fecha/hora",
+              "displayName": "Fecha/hora",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {
+          "cellFormat": "RAW"
+        }
+      },
+      "id": "96cefae8-e4b7-42c8-9b37-b323694f5cb6",
+      "name": "ADD_DATA",
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "position": [
+        1104,
+        464
+      ],
+      "typeVersion": 4.5,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "zRVuHPbbOiJOY8fu",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "daniel@grupolotificadora.com",
+        "toEmail": "=daniel@grupolotificadora.com",
+        "subject": "=NUEVA CITA DE VENTAS AGENDADA",
+        "html": "={{ $fromAI('HTML', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSendTool",
+      "typeVersion": 2.1,
+      "position": [
+        1232,
+        464
+      ],
+      "id": "50cee3ad-3e61-412c-a015-c122e291e42d",
+      "name": "SEND_MAIL",
+      "webhookId": "da5e11bd-edb8-4c8c-a4ee-dbdefb520e24",
+      "credentials": {
+        "smtp": {
+          "id": "ZvjgtUqBlnzi4PaF",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [
+        336,
+        464
+      ],
+      "id": "879b9a96-d329-4202-8c1a-e990f1ce97b2",
+      "name": "Think3"
+    },
+    {
+      "parameters": {
+        "model": "meta-llama/llama-4-scout-17b-16e-instruct",
+        "options": {
+          "temperature": 0
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        464,
+        464
+      ],
+      "id": "a2683f5f-522c-490c-8fcd-34ba9ed14b7b",
+      "name": "LLAMA SCOUT1",
+      "credentials": {
+        "groqApi": {
+          "id": "E4P6OCrR081avfku",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Utiliza esta herramienta para CUALQUIER consulta sobre venta de terrenos, precios, servicios, mensualidades, ubicaciones, o cuando el cliente de indicios de querer comprar.",
+        "text": "={{ $('Chat Webhook').item.json.body.message }}",
+        "options": {
+          "systemMessage": "=Eres un asistente de ventas en Grupo Lotificadora, experto en la venta de terrenos con servicios básicos en Mexicali, Baja California, y Poblado Los Algodones. Tu objetivo es resolver dudas del usuario y guiarlo hacia el cierre de la venta.\n\nINFORMACION RELEVANTE:\n- Grupo Lotificadora cuenta con sucursales en Mexicali y Poblado Los Algodones. Si el cliente solicita la ubicación exacta o indicaciones para llegar a uno de nuestros fraccionamientos, recomienda agendar una cita con un Asesor de Ventas para una atención más personalizada.\n- Somos una empresa cachanilla con mas de 30 años en el mercado.\n- En Grupo Lotificadora garantizamos servicios, seguridad legal y jurídica total en todos nuestros terrenos a diferencia de la competencia.\n\nREGLAS CRITICAS:\n- Responde SIEMPRE en español.\n- Usa un tono profesiona y amable, da respuestas concisas, no inventes datos ni agregues texto innecesario.\n- Integra de forma natural una de estas 3 preguntas para guiar la conversacion:\n  - ¿En qué zona te interesa? (Islas Agrarias A, B, Ejido Cuernavaca, Curva carretera santa Isabel o Poblado Los Algodones).\n  - ¿Cuál es tu presupuesto mensual aproximado en pesos?.\n  - ¿Buscas terreno con servicios listos para construir ya o para invertir a mediano plazo?. \n- Guía al usuario hacia el cierre de venta de forma natural, ofreciendo información relevante del inventario que coincida con sus necesidades y sugiriendo agendar una cita.\n- Si el usuario pregunta por enganche,financiamiento, mensualidades o infonavit usar la informacion de la secccion FINANCIAMIENTO.\n- Prohibido inventar o especular información fuera del inventario proporcionado abajo.\n- Si no hay información suficiente en la base, di: \"Para más detalles, te recomiendo agendar una cita con un Asesor de Ventas.\"\n\nINVENTARIO:\n- Zona Poniente Curva santa isabel:\n  - La Gloria: 200 m², desde $4,861/mes. Luz, agua, drenaje. Ub: carr. Progreso–Santa Isabel, 2 min entronque Tijuana, cerca Sukarne.\n  - El Paraíso: 190 m², desde $4,618/mes. Luz, agua, drenaje. Ub: prol. Blvd. Lázaro Cárdenas, cerca estación bomberos y subcomandancia.\n  - Joyas del Paraíso 1 y 2: 190 m², desde $4,618/mes. Luz, agua, drenaje. Ub: espaldas parque acuático El Barco, 5 min Gómez Morin y nueva Garita Centro.\n  - Joyas del Paraíso 3: 190 m², desde $3,563/mes. Luz/Agua en curso, drenaje (2028) Ub: misma zona Joyas 1-2.\n  - Aires del Paraíso 1 y 2: desde 190 m², desde $3,958/mes. Luz disponible, agua en curso, drenaje (2028) Ub: curva carr. Santa Isabel, cerca centros comerciales y Garita Centro.\n  - Aires del Paraíso 3: 190 m², desde $3,563/mes. Luz/Agua en curso, drenaje (2028) Ub: misma zona Aires 1-2.\n\n- Zona Oriente (Islas Agrarias A, B):\n  - Oasis: 240 m², desde $6,666.67/mes. Luz, agua, drenaje, listos para escriturar. Ub:En Islas Agrarias A, cerca del Hospital Materno Infantil, Plaza Sendero, COBACH Vasconcelos y más.\n  - Manantiales: 450 m², desde $9,375.00/mes. Luz, agua, drenaje, listos para escriturar. Ub:A 5 minutos del Aeropuerto Internacional de Mexicali, Manantiales está ubicado en Islas Agrarias Grupo B.\n  - Sesvania:300 m², desde $7,291.67.00/mes. Luz, agua, drenaje, listos para escriturar. Ub:Junto al poblado Ejido Cuernavaca a 3 minutos de carretera a San Luis.\n\n- Poblado Los Algodones:\n  - Fraccionamiento Algodones: 180 m², desde $3,125.00/mes Luz, agua, drenaje.\n  - Fraccionamiento Valle Fundadores: 180 m², desde $3,125.00/mes. Servicios a inicios de 2027.\n\nFINANCIAMIENTO:\n- GL 120: 120 mensualidades.\n- GL 144: 144 mensualidades.\n- GL Express: 36 mensualidades.\n- Contado: 1 único pago, se otorga un 15% de descuento sobre el precio de lista.\n- No se acepta crédito INFONAVIT.\n- No se requiere pago de enganche, solo el pago de la primera mensualidad.\n\nREQUISITOS DE CONTRATACIÓN (sin modificación):\n - INE vigente, comprobante de domicilio (no mayor a 3 meses), pago de la primera mensualidad (no se requiere enganche).\n\nOPCIONES DE PAGO DISPONIBLES:\n - Efectivo en sucursal corporativo, domiciliación bancaria, App, Pago en página web oficial, Tarjeta de crédito o débito de cualquier banco(excepto American Express).",
+          "enableStreaming": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 3,
+      "position": [
+        192,
+        256
+      ],
+      "id": "beb8d163-0dcf-4ee7-be21-5208e9b15b9c",
+      "name": "AGENTE VENTAS"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Utiliza esta herramienta UNICAMENTE si el usuario quiere agendar una cita o confirmar una cita",
+        "text": "={{ $('Chat Webhook').item.json.body.message }}",
+        "options": {
+          "systemMessage": "=Eres un Asistente Virtual especializado en agendar citas debes guiar al usuario paso a paso para recopilar la información necesaria, verificar disponibilidad y agendar solo si hay disponibilidad. Manten un tono profesional y amable. Responde siempre en español. No ignores ninguna regla crítica.\n\nINFORMACION CLAVE:\n- Timezone: America/Tijuana (UTC-07:00)\n- Fecha y hora actual: {{ $now.setZone('America/Tijuana').toFormat('dd/MM/yyyy hh:mm a') }}\n- Horario disponible: Lunes a sábado, 08:00–18:00 (hora Mexicali). Cerrado domingos.\n- Duración de cada cita: exactamente 10 minutos (divide cada hora en 6 bloques: 00-10, 10-20, 20-30, 30-40, 40-50, 50-00).\n\nREGLAS OBLIGATORIAS:\n- Nunca reserves si no hay disponibilidad o fuera del horario.\n- Guarda toda la conversación para el correo final.\n- Usa EXACTAMENTE los nombres y parámetros de las tools abajo.\n\nTOOLS\n- CHECK_AVAILABILITY(Start_Time: ISO America/Tijuana, End_Time: ISO)\n- CREATE_EVENT(Start: ISO, End: ISO, Summary, Description)\n- ADD_DATA(Nombre, Telefono, Fecha_hora)\n- SEND_MAIL(HTML: conversación completa + datos cita)\n\nPROCESO ESTRICTO:\n\n0. Primera respuesta: \"El horario para agendar citas es de lunes a sábado, de 8:00 am a 6:00 pm (hora de Mexicali).\"\n1. Recolecta datos: nombre completo, teléfono y fecha/hora preferida (puede ser natural: “mañana a las 8 am”, “el jueves a las 10:30”, etc.).\n   - Si faltan datos, confirma uno por uno antes de avanzar.\n   - Es muy importante que no inventes datos (no debes inventar ni nombre, ni telefono , ni fecha /hora).\n2. Verificación:\n   - Convierte la fecha/hora a ISO(America/Tijuana).\n   - Calcula Start_Time y End_Time = Start_Time + 10 minutos.\n   - Llama CHECK_AVAILABILITY.\n   - SI está disponible → procede a paso 3.\n   - No disponible → suma +10 min al Start_Time y reintenta automáticamente (mientras el nuevo Start_Time sea antes de las 18:00 del mismo día).\n     • Detente en el primer bloque libre que encuentres y procede a paso 3.\n     • Si no hay ningún bloque libre ese día, informa: “No hay disponibilidad el [fecha] después de la hora que pediste. ¿Por favor indiquenos otra fecha y horario para buscar disponibilidad?”\n3. Reserva:\n   - Extrae Nombre completo y Teléfono.\n   - Calcula End = Start + 10 minutos (mismo formato ISO).\n   - Llama CREATE_EVENT con los parámetros EXACTOS:\n     Start: \"2026-03-15T10:00:00-07:00\"\n     End: \"2026-03-15T10:10:00-07:00\"\n     Summary: \"[Nombre completo] - [Teléfono]\"\n     Description: \"VISITA TERRENOS - [Nombre completo] - [Teléfono]\"\n   - Llama ADD_DATA:Nombre, Telefono, Fecha_hora: \"dd/MM/yyyy hh:mm a\"\n   - Llama SEND_MAIL el HTML debe contener:\n     • La conversación completa\n     • Datos de la cita\n     • Horario final agendado\n4. Mensaje final al usuario (solo después de los 4 tool calls):\n - Informa al usuario que \"Su cita ha sido agendada correctamente. Un asesor especializado se pondrá en contacto con usted lo más pronto posible.\" + resumen de fecha y hora de la cita agendada",
+          "enableStreaming": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 3,
+      "position": [
+        768,
+        256
+      ],
+      "id": "1fac2c50-bf0a-4a55-876f-84bf72988a5b",
+      "name": "AGENTE CITAS"
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 2
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        1488,
+        464
+      ],
+      "id": "ceae75ba-957f-4a59-bac5-189840fa27e2",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [
+        1632,
+        608
+      ],
+      "id": "ad806e2c-1406-48cc-afe1-78bb2160c3d2",
+      "name": "Think1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// EXTRAER Y PREPARAR SESIÓN DESDE WEBHOOK\nconst inputData = $input.first().json.body;\nconst { message, sessionId: inputSessionId, attachments,isExistingCustomer:isCustomer } = inputData;\n//$input.first().json.body.sessionId\n// Generar sessionId si no viene del chat web\nconst sessionId = inputSessionId || 'session-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);\n\nconsole.log('Webhook recibido:', { message, sessionId, attachments });\nconsole.log('SessionId generado/usado:', sessionId);\n\n// Preparar datos para el flujo LangChain con sessionId explícito\nconst messageData = {\n  text: message,\n  sessionId: sessionId,  // CRÍTICO: sessionId para memoria\n  userInput: message,\n  timestamp: new Date().toISOString(),\n  isCustomer:isCustomer\n};\n\n// Devolver solo el JSON con el sessionId correcto\nreturn {\n  json: messageData\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -112,
+        32
+      ],
+      "id": "f1594411-0492-4877-b1f7-d1686cd6e785",
+      "name": "getSessionId"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "59ed7cef-20f8-4f75-bc1f-d9dde434738f",
+              "leftValue": "={{ $('getSessionId').item.json.isCustomer }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "30665a07-dbcf-407d-8eef-d95daeb9b0d8",
+              "leftValue": "={{ $('getSessionId').item.json.isCustomer }}",
+              "rightValue": "false",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "looseTypeValidation": "={{ true }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -640,
+        -400
+      ],
+      "id": "250bb8d9-23d6-4411-8a3f-67708b0f508d",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "options": {
+          "systemMessage": "=Eres un router inteligente. Tu ÚNICA tarea es decidir a qué sub-agente pasar el control o responder directamente. Analiza SIEMPRE el contexto completo de la conversación (historia + último mensaje del usuario).\n\nReglas estrictas (en este orden exacto):\n\n\n1. Si el último mensaje del asistente fue una pregunta de confirmación de AGENTE CITAS (ej. “¿Confirmas?”, “¿Quieres agendar en ese horario?”, “¿Sí o no?”) y el usuario responde con “si confirmo”, “confirmo”, “cambiar”, “otra hora”, etc., clasifica OBLIGATORIAMENTE como AGENTE CITAS (continuación).\n2. Clasifica el intent del usuario en UNA sola categoría (usa la historia para decidir):\n   - AGENTE VENTAS → cualquier duda sobre terrenos, precios, zonas, mensualidades, inventario, financiamiento,informacion o info.\n   - AGENTE CITAS → quiere agendar, visitar, da nombre/teléfono/fecha, o es continuación de confirmación.\n   - AGENTE COBRANZA   → Si quiere reportar un problema con sus pagos, deudas, métodos de pago, cobranza o desea hablar con un agente de cobranza.\n   - ATENCION CLIENTES → quejas, problemas con terreno o servicios, da su nombre + teléfono + problema.\n   - Si saluda → Devuelve un cordial saludo y pregunta como lo puedes apoyar\n   - Si el mensaje o pregunta no esta relacionado con los temas anteriores por ejemplo (pregunta sobre otros temas como matematicas, historya,geografia, lugares famosos o personas) ignora el mensaje y termina el flujo indicandole al usuario de manera amable que no tienes conocimiento sobre ese tema y si tiene alguna otra duda.\n3. Puedes llamar MÁXIMO UNA herramienta por mensaje del usuario. \n   Una vez que recibas el resultado de la herramienta (el texto devuelto por cualquier sub-agente), responde EXACTAMENTE con ese texto tal cual, sin agregar nada, sin explicación, sin \"Passthrough\", sin re-clasificar. Nunca llames otra herramienta después de recibir un resultado.\n\n4. Nunca inventes categorías. Si dudas, usa AGENTE VENTAS por defecto (es el más seguro).\n\n\n\nResponde SOLO en español. Mantén el output limpio.\n\n¡NUNCA agregues texto extra! Tu éxito depende de pasar limpio las respuestas de los sub-agentes.\n",
+          "enableStreaming": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        144,
+        32
+      ],
+      "id": "dcc6af10-9a6b-4870-8dd2-4b9e9c29079c",
+      "name": "ASISTENTE CLIENTES"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Utiliza esta herramienta UNICAMENTE si el usuario solicita información de las formas o metodos de pago",
+        "text": "={{ $('Chat Webhook').item.json.body.message }}",
+        "options": {
+          "systemMessage": "=Rol: Asistente Virtual - Grupo Lotificadora\nObjetivo: Brindarle la información al usuario sobre las diferentes formas o metodos de pago disponibles en grupo de lotificadora.\n\nFormas de pago disponibles:\n -Pago por medio de página web: compartirle al cliente el link de la página directo al apartado de pagos https://grupolotificadora.com/wp/pagos/ ,asi como mencionarle que puede revisar el siguiente video explicativo de como utilizar la página en el siguiente link https://youtu.be/FMXwlBd7F6w?si=nX6tVXQ3SsRvIBVM\n\n-Pago por medio de nuestra APP: compartir las ligas para descargar aplicacion para las plataformas iOS y Android. Para Android la liga es: https://play.google.com/store/apps/details?id=com.inercy.lotificadora_movil \nPara iOS(iPhone / iPad) la liga es: https://apps.apple.com/mx/app/lotificadora-gl-terrenos/id6740498174 , asi como mencionarle que puede revisar el siguiente video explicativo de como utilizar la App en el siguiente link:  https://youtu.be/vDBCIDeQPgE?si=dZom185SCvaxloGq\n\n-Pago por medio decargo domiciliado: Este servicio se activa registrando tu tarjeta (debito/crédito), presentate en cualquiera de nuestras oficinas con tu INE y un comprobante de domicilio reciente, con este método aseguras tu pago puntual mes con mes.\n\n\nSi el cliente pregunta a cuantos pagos o cuantas mensualidades necesita para pagar su terreno usa la siguiente información:\nGL 120: 120 mensualidades.\nGL 144: 144 mensualidades.\nGL Express: 36 mensualidades.\nContado: 1 único pago,se otorga un 15% de descuento sobre el precio de lista.",
+          "enableStreaming": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 3,
+      "position": [
+        1472,
+        256
+      ],
+      "id": "d2b3b61a-25e4-4a42-952c-4706d05d9704",
+      "name": "AGENTE COBRANZA"
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 4
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        1872,
+        464
+      ],
+      "id": "38d535ea-3d8b-471b-9f0f-657b5cd7b218",
+      "name": "Simple Memory1"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [
+        2000,
+        608
+      ],
+      "id": "5d97faa9-4fb6-42a3-bac4-324658442424",
+      "name": "Think5"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Utiliza esta herramienta UNICAMENTE si el usuario quiere reportar un problema con su terreno o algun servicio.",
+        "text": "={{ $('Chat Webhook').item.json.body.message }}",
+        "options": {
+          "systemMessage": "=Rol: Asistente Virtual - Grupo Lotificadora\nObjetivo: Solicitar al cliente que te informe o explique de manera detallada de un problema con su terreno o algun servicio.\n\nIndicaciones:\n1.Pregunta el nombre completo.\n2.De manera cortes pedirle al usuario (usando su nombre si ya lo proporcionó anteriormente) que por favor comparta el número de terreno, número de manzana y fraccionamiento y explique el problema que presenta con su terreno o servicio. Ejemplo:   \"Gracias, Alfredo así como en que Fraccionamiento. Para poder registrar su reporte, por favor indíquenos: Número del terreno y Manzana, también el Fraccionamiento. 2. Descripción del problema (por ejemplo: problemas de drenaje, acceso, servicios, etc.). 3.¿Ha intentado contactar a alguien previamente? Si es así, indique con quién y cuándo. Con esta información podremos derivar su caso al área correspondiente y darle una solución lo antes posible.\".\n\n3.Muestra un mensaje de confirmación con los datos del problema.\n4.Enviar por correo el problema del cliente usando SEND_MAIL_ATENCION.\n Contenido del correo:\n Datos de la cita: Nombre, Fecha/Hora actual (en formato legible: dd/mm/yyyy HH:MM America/Tijuana). {{ $now.setZone('America/Tijuana').toFormat('dd/MM/yyyy hh:mm a') }}.\n5. Agradecer al usuario por compartir su información y mencionarle que un asesor de Atención a Clientes se pondrá en contacto para darle seguimiento a su problema lo más pronto posible.\n6. Te despides cordialmente del usuario.\n\nHerramientas:\n- SEND_MAIL_ATENCION: enviar por correo los datos de la cita y la conversacion completa\n",
+          "enableStreaming": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 3,
+      "position": [
+        1856,
+        256
+      ],
+      "id": "aa2f059b-cd56-421f-8fbe-2d6b3630e05e",
+      "name": "ATENCION CLIENTES"
+    },
+    {
+      "parameters": {
+        "fromEmail": "daniel@grupolotificadora.com",
+        "toEmail": "=daniel@grupolotificadora.com",
+        "subject": "=CLIENTE REPORTA PROBLEMA - ATENCION CLIENTES",
+        "html": "={{ $fromAI('HTML', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSendTool",
+      "typeVersion": 2.1,
+      "position": [
+        2128,
+        464
+      ],
+      "id": "ead95c01-d50d-4067-894e-b6036ad347ee",
+      "name": "SEND_MAIL_ATENCION",
+      "webhookId": "da5e11bd-edb8-4c8c-a4ee-dbdefb520e24",
+      "credentials": {
+        "smtp": {
+          "id": "ZvjgtUqBlnzi4PaF",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "meta-llama/llama-4-scout-17b-16e-instruct",
+        "options": {
+          "maxTokensToSample": 4096,
+          "temperature": 0
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        1360,
+        464
+      ],
+      "id": "b4ff96c9-67e2-4328-b929-24e91ad72125",
+      "name": "LLAMA SCOUT",
+      "credentials": {
+        "groqApi": {
+          "id": "E4P6OCrR081avfku",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-120b",
+        "options": {
+          "temperature": 0.1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -192,
+        256
+      ],
+      "id": "f61d5e52-4ed0-449b-8b38-381301cd5b23",
+      "name": "GPT-OSS-120B",
+      "credentials": {
+        "groqApi": {
+          "id": "E4P6OCrR081avfku",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-120b",
+        "options": {
+          "temperature": 0.1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        80,
+        464
+      ],
+      "id": "3fd129af-10ee-4e25-b92c-db4fcfccfebe",
+      "name": "GPT-OSS-120B_1",
+      "credentials": {
+        "groqApi": {
+          "id": "E4P6OCrR081avfku",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-20b",
+        "options": {
+          "maxTokensToSample": 4096,
+          "temperature": 0.1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        1744,
+        464
+      ],
+      "id": "1538af8e-5649-41c9-94ac-29903980bbf8",
+      "name": "GPT-OSS-20B",
+      "credentials": {
+        "groqApi": {
+          "id": "E4P6OCrR081avfku",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json }}",
+        "options": {
+          "systemMessage": "Role: You are an expert in format text  to html with css to present beautiful texts to the final user\nTarea: Usa el texto que recibes  y transformalo en formato html con css inline para un formato profesional, no agregues texto adicional por tu cuenta."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        2144,
+        48
+      ],
+      "id": "c44d2667-7791-4e9c-8fb9-15203a9a1f30",
+      "name": "FORMATEADOR"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {
+          "temperature": 0.1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        2224,
+        272
+      ],
+      "id": "9a86b481-ec74-4488-a291-52e45f1ce1e5",
+      "name": "llama3_70b",
+      "credentials": {
+        "groqApi": {
+          "id": "E4P6OCrR081avfku",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 4
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        208,
+        464
+      ],
+      "id": "c6a1ceed-53d8-48be-9033-43f85940436f",
+      "name": "MainMEM1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Chat Webhook": {
+      "main": [
+        [
+          {
+            "node": "getSessionId",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think": {
+      "ai_tool": [
+        [
+          {
+            "node": "ASISTENTE CLIENTES",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MainMEM": {
+      "ai_memory": [
+        [
+          {
+            "node": "ASISTENTE CLIENTES",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sales Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "AGENTE CITAS",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think2": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "CHECK_AVAILABILITY": {
+      "ai_tool": [
+        [
+          {
+            "node": "AGENTE CITAS",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CREATE_EVENT": {
+      "ai_tool": [
+        [
+          {
+            "node": "AGENTE CITAS",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ADD_DATA": {
+      "ai_tool": [
+        [
+          {
+            "node": "AGENTE CITAS",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SEND_MAIL": {
+      "ai_tool": [
+        [
+          {
+            "node": "AGENTE CITAS",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think3": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "LLAMA SCOUT1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AGENTE CITAS",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AGENTE VENTAS": {
+      "ai_tool": [
+        [
+          {
+            "node": "ASISTENTE CLIENTES",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AGENTE CITAS": {
+      "ai_tool": [
+        [
+          {
+            "node": "ASISTENTE CLIENTES",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AGENTE COBRANZA",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think1": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "getSessionId": {
+      "main": [
+        [
+          {
+            "node": "ASISTENTE CLIENTES",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [],
+        []
+      ]
+    },
+    "ASISTENTE CLIENTES": {
+      "main": [
+        [
+          {
+            "node": "FORMATEADOR",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AGENTE COBRANZA": {
+      "ai_tool": [
+        [
+          {
+            "node": "ASISTENTE CLIENTES",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "ATENCION CLIENTES",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think5": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "SEND_MAIL_ATENCION": {
+      "ai_tool": [
+        [
+          {
+            "node": "ATENCION CLIENTES",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ATENCION CLIENTES": {
+      "ai_tool": [
+        [
+          {
+            "node": "ASISTENTE CLIENTES",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LLAMA SCOUT": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AGENTE COBRANZA",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GPT-OSS-120B": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "ASISTENTE CLIENTES",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GPT-OSS-120B_1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AGENTE VENTAS",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GPT-OSS-20B": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "ATENCION CLIENTES",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FORMATEADOR": {
+      "main": [
+        [
+          {
+            "node": "Respuesta Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "llama3_70b": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "FORMATEADOR",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MainMEM1": {
+      "ai_memory": [
+        [
+          {
+            "node": "AGENTE VENTAS",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "6e95f81d-f566-44a9-969f-1f0020e12f06",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3478dec1790fb7f8d7698f2324949fba9fb4e427a57492f7b4ff072c65a0f4ff"
+  },
+  "id": "EnfgykUbR6F5cdKG",
+  "tags": []
+}
